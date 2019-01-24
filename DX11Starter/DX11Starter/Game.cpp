@@ -281,8 +281,8 @@ void Game::Draw(float deltaTime, float totalTime)
 	//    have different geometry.
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
-	ID3D11Buffer* vertexBuffer = geometry1->GetVertexBuffer();
-	ID3D11Buffer* indexBuffer = geometry1->GetIndexBuffer();
+	vertexBuffer = geometry1->GetVertexBuffer();
+	indexBuffer = geometry1->GetIndexBuffer();
 	context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
