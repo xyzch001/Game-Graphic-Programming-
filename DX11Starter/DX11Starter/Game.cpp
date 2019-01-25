@@ -21,8 +21,8 @@ Game::Game(HINSTANCE hInstance)
 		true)			// Show extra stats (fps) in title bar?
 {
 	// Initialize fields
-	/*vertexBuffer = 0;
-	indexBuffer = 0;*/
+	vertexBuffer = 0;
+	indexBuffer = 0;
 	vertexShader = 0;
 	pixelShader = 0;
 
@@ -164,23 +164,6 @@ void Game::CreateBasicGeometry()
 	    { XMFLOAT3(+1.25f, +0.5f, +0.0f), red },
 	};
 
-	/*Vertex vertices3[] =
-	{
-		{ XMFLOAT3(-2.0f, +0.5f, +0.0f), red },
-		{ XMFLOAT3(-1.25f, -0.5f, +0.0f), blue },
-		{ XMFLOAT3(-2.75f, -0.5f, +0.0f), green },
-		{ XMFLOAT3(-2.75f, +0.5f, +0.0f), green },
-	};*/
-
-	/*Vertex vertices3[] =
-	{
-		{ XMFLOAT3(-2.75f, +0.5f, +0.0f), red },
-		{ XMFLOAT3(-2.75f, -0.5f, +0.0f), blue },
-		{ XMFLOAT3(-1.25f, -0.5f, +0.0f), green },
-		{ XMFLOAT3(-1.25f, +0.5f, +0.0f), red }
-	};*/
-
-
 	Vertex vertices3[] =
 	{
 		{ XMFLOAT3(-2.75f, +0.5f, +0.0f), red },
@@ -276,66 +259,41 @@ void Game::Draw(float deltaTime, float totalTime)
 	vertexShader->SetShader();
 	pixelShader->SetShader();
 
-	// Set buffers in the input assembler
-	//  - Do this ONCE PER OBJECT you're drawing, since each object might
-	//    have different geometry.
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-	vertexBuffer = geometry1->GetVertexBuffer();
-	indexBuffer = geometry1->GetIndexBuffer();
-	context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-
-	// Finally do the actual drawing
-	//  - Do this ONCE PER OBJECT you intend to draw
-	//  - This will use all of the currently set DirectX "stuff" (shaders, buffers, etc)
-	//  - DrawIndexed() uses the currently set INDEX BUFFER to look up corresponding
-	//     vertices in the currently set VERTEX BUFFER
-	context->DrawIndexed(
-		3,     // The number of indices to use (we could draw a subset if we wanted)
-		0,     // Offset to the first index we want to use
-		0);    // Offset to add to each index when looking up vertices
-	
-
-
-	vertexBuffer = geometry2->GetVertexBuffer();
-	indexBuffer = geometry2->GetIndexBuffer();
-	context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-
-
-	// Finally do the actual drawing
-	//  - Do this ONCE PER OBJECT you intend to draw
-	//  - This will use all of the currently set DirectX "stuff" (shaders, buffers, etc)
-	//  - DrawIndexed() uses the currently set INDEX BUFFER to look up corresponding
-	//     vertices in the currently set VERTEX BUFFER
-	context->DrawIndexed(
-		6,     // The number of indices to use (we could draw a subset if we wanted)
-		0,     // Offset to the first index we want to use
-		0);    // Offset to add to each index when looking up vertices
-
-
-	vertexBuffer = geometry3->GetVertexBuffer();
-	indexBuffer = geometry3->GetIndexBuffer();
-	context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-
-	// Finally do the actual drawing
-	//  - Do this ONCE PER OBJECT you intend to draw
-	//  - This will use all of the currently set DirectX "stuff" (shaders, buffers, etc)
-	//  - DrawIndexed() uses the currently set INDEX BUFFER to look up corresponding
-	//     vertices in the currently set VERTEX BUFFER
-	context->DrawIndexed(
-		12,     // The number of indices to use (we could draw a subset if we wanted)
-		0,     // Offset to the first index we want to use
-		0);    // Offset to add to each index when looking up vertices
-
+	//Set IA of different Mesh object
+	IASetAssembler(geometry1);
+	IASetAssembler(geometry2);
+	IASetAssembler(geometry3);
 
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it
 	//  - Do this exactly ONCE PER FRAME (always at the very end of the frame)
 	swapChain->Present(0, 0);
 }
+
+void Game::IASetAssembler(Mesh* geo)
+{
+	// Set buffers in the input assembler
+	//  - Do this ONCE PER OBJECT you're drawing, since each object might
+	//    have different geometry.
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0;
+	vertexBuffer = geo->GetVertexBuffer();
+	indexBuffer = geo->GetIndexBuffer();
+	context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
+	context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+	// Finally do the actual drawing
+	//  - Do this ONCE PER OBJECT you intend to draw
+	//  - This will use all of the currently set DirectX "stuff" (shaders, buffers, etc)
+	//  - DrawIndexed() uses the currently set INDEX BUFFER to look up corresponding
+	//     vertices in the currently set VERTEX BUFFER
+	context->DrawIndexed(
+		geo->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
+		0,     // Offset to the first index we want to use
+		0);    // Offset to add to each index when looking up vertices
+}
+
+
 
 
 #pragma region Mouse Input
