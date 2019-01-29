@@ -1,5 +1,2 @@
 ﻿  GameEntity.cpp
-e:\learning\weihaoyan\gamegraphicprogramming\game-graphic-programming-\dx11starter\dx11starter\gameentity.h(3): warning C4067: 预处理器指令后有意外标记 - 应输入换行符
-e:\learning\weihaoyan\gamegraphicprogramming\game-graphic-programming-\dx11starter\dx11starter\game.h(36): error C2143: 语法错误: 缺少“;”(在“*”的前面)
-e:\learning\weihaoyan\gamegraphicprogramming\game-graphic-programming-\dx11starter\dx11starter\game.h(36): error C4430: 缺少类型说明符 - 假定为 int。注意: C++ 不支持默认 int
-e:\learning\weihaoyan\gamegraphicprogramming\game-graphic-programming-\dx11starter\dx11starter\game.h(36): error C2238: 意外的标记位于“;”之前
+  DX11Starter.vcxproj -> Z:\IGMProfile\Desktop\GGP\DX11Starter\x64\Debug\DX11Starter.exe

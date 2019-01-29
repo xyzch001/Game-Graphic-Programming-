@@ -5,7 +5,10 @@
 GameEntity::GameEntity(Mesh* object)
 {
 	gameObj = object;
-
+	/*translation = DirectX::XMMatrixIdentity();
+	rotation = DirectX::XMMatrixIdentity();
+	scale = DirectX::XMMatrixIdentity();
+	worldMatrix = DirectX::XMMatrixIdentity();*/
 	//Set default vaules for the matrix
 	translation =
 	{
@@ -36,7 +39,7 @@ GameEntity::GameEntity(Mesh* object)
 		1.0f, 0.0f, 0.0f, 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
 		0.0f, 0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, 0.0f, 1.0f,
 	};
 
 }
@@ -44,11 +47,17 @@ GameEntity::GameEntity(Mesh* object)
 
 GameEntity::~GameEntity()
 {
+	gameObj->~Mesh();
 }
 
 ID3D11Buffer * GameEntity::GetVertexBuffer()
 {
 	return gameObj->GetVertexBuffer();
+}
+
+ID3D11Buffer * GameEntity::GetIndexBuffer()
+{
+	return gameObj->GetIndexBuffer();
 }
 
 void GameEntity::SetWorldMatrix()
@@ -57,7 +66,7 @@ void GameEntity::SetWorldMatrix()
 
 DirectX::XMFLOAT4X4 GameEntity::GetWorldMatrix()
 {
-	return DirectX::XMFLOAT4X4();
+	return worldMatrix;
 }
 
 void GameEntity::SetTranslation(float x, float y, float z)

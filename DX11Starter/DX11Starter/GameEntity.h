@@ -1,6 +1,11 @@
 #pragma once
 
-#include "Game.h";
+#include "DXCore.h"
+#include "SimpleShader.h"
+#include <DirectXMath.h>
+#include "Vertex.h"
+#include <d3d11.h>
+#include "Mesh.h"
 
 class GameEntity
 {
@@ -9,6 +14,7 @@ public:
 	~GameEntity();
 
 	ID3D11Buffer* GetVertexBuffer();
+	ID3D11Buffer* GetIndexBuffer();
 
 	//Movement Methods
 	void SetWorldMatrix();
