@@ -5,6 +5,7 @@
 #include <DirectXMath.h>
 #include "Mesh.h"
 #include "Vertex.h"
+#include "GameEntity.h"
 
 class Game 
 	: public DXCore
@@ -31,6 +32,8 @@ private:
 	Mesh* geometry1;
 	Mesh* geometry2;
 	Mesh* geometry3;
+
+	GameEntity* test1;
 
 
 	// Initialization helper methods - feel free to customize, combine, etc.

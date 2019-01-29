@@ -8,6 +8,8 @@ public:
 	GameEntity(Mesh* object);
 	~GameEntity();
 
+	ID3D11Buffer* GetVertexBuffer();
+
 	//Movement Methods
 	void SetWorldMatrix();
 	DirectX::XMFLOAT4X4 GetWorldMatrix();

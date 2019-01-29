@@ -46,6 +46,11 @@ GameEntity::~GameEntity()
 {
 }
 
+ID3D11Buffer * GameEntity::GetVertexBuffer()
+{
+	return gameObj->GetVertexBuffer();
+}
+
 void GameEntity::SetWorldMatrix()
 {
 }

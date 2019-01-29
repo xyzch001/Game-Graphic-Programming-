@@ -164,23 +164,6 @@ void Game::CreateBasicGeometry()
 	    { XMFLOAT3(+1.25f, +0.5f, +0.0f), red },
 	};
 
-	/*Vertex vertices3[] =
-	{
-		{ XMFLOAT3(-2.0f, +0.5f, +0.0f), red },
-		{ XMFLOAT3(-1.25f, -0.5f, +0.0f), blue },
-		{ XMFLOAT3(-2.75f, -0.5f, +0.0f), green },
-		{ XMFLOAT3(-2.75f, +0.5f, +0.0f), green },
-	};*/
-
-	/*Vertex vertices3[] =
-	{
-		{ XMFLOAT3(-2.75f, +0.5f, +0.0f), red },
-		{ XMFLOAT3(-2.75f, -0.5f, +0.0f), blue },
-		{ XMFLOAT3(-1.25f, -0.5f, +0.0f), green },
-		{ XMFLOAT3(-1.25f, +0.5f, +0.0f), red }
-	};*/
-
-
 	Vertex vertices3[] =
 	{
 		{ XMFLOAT3(-2.75f, +0.5f, +0.0f), red },
@@ -206,6 +189,7 @@ void Game::CreateBasicGeometry()
 	geometry2 = new Mesh(vertices2, 4, indices2, 6, device);
 	geometry3 = new Mesh(vertices3, 6, indices3, 12, device);
 	
+	test1 = new GameEntity(geometry1);
 }
 
 
@@ -281,7 +265,7 @@ void Game::Draw(float deltaTime, float totalTime)
 	//    have different geometry.
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
-	vertexBuffer = geometry1->GetVertexBuffer();
+	vertexBuffer = test1->GetVertexBuffer
 	indexBuffer = geometry1->GetIndexBuffer();
 	context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
