@@ -21,6 +21,7 @@ public:
 	void OnResize();
 	void Update(float deltaTime, float totalTime);
 	void Draw(float deltaTime, float totalTime);
+	void Shader(GameEntity* entity);
 
 	// Overridden mouse input helper methods
 	void OnMouseDown (WPARAM buttonState, int x, int y);
@@ -33,7 +34,12 @@ private:
 	Mesh* geometry2;
 	Mesh* geometry3;
 
-	GameEntity* test1;
+	//Five new gameentities
+	GameEntity* entity1;
+	GameEntity* entity2;
+	GameEntity* entity3;
+	GameEntity* entity4;
+	GameEntity* entity5;
 
 
 	// Initialization helper methods - feel free to customize, combine, etc.

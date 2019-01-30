@@ -1,10 +1,5 @@
 #pragma once
 
-#include "DXCore.h"
-#include "SimpleShader.h"
-#include <DirectXMath.h>
-#include "Vertex.h"
-#include <d3d11.h>
 #include "Mesh.h"
 
 class GameEntity
@@ -13,8 +8,10 @@ public:
 	GameEntity(Mesh* object);
 	~GameEntity();
 
+	//Get the Mesh members
 	ID3D11Buffer* GetVertexBuffer();
 	ID3D11Buffer* GetIndexBuffer();
+	int GetIndexCount();
 
 	//Movement Methods
 	void SetWorldMatrix();
@@ -28,10 +25,13 @@ public:
 
 
 private:
+	//the translation, rotation and scale of this entity
 	DirectX::XMFLOAT4X4 translation;
 	DirectX::XMFLOAT4X4 rotation;
 	DirectX::XMFLOAT4X4 scale;
 	DirectX::XMFLOAT4X4 worldMatrix;
+
+	//Mesh object to store the vertex buffer and index buffer
 	Mesh* gameObj;
 
 

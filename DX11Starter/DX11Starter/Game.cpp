@@ -51,10 +51,17 @@ Game::~Game()
 	delete vertexShader;
 	delete pixelShader;
 
+	//delete Mesh objects and clean up the DirectX objects
 	delete geometry1;
 	delete geometry2;
 	delete geometry3;
-	//delete test1;
+	
+	//Delete GameEntity objects 
+	delete entity1;
+	delete entity2;
+	/*delete entity3;
+	delete entity4;
+	delete entity5;*/
 }
 
 // --------------------------------------------------------
@@ -153,8 +160,10 @@ void Game::CreateBasicGeometry()
 	Vertex vertices1[] =
 	{
 		{ XMFLOAT3(+0.0f, +0.5f, +0.0f), red },
-		{ XMFLOAT3(+0.75f, -0.5f, +0.0f), blue },
-		{ XMFLOAT3(-0.75f, -0.5f, +0.0f), green },
+		{ XMFLOAT3(+0.5f, 0.0f, +0.0f), blue },
+		{ XMFLOAT3(-0.5f, -0.0f, +0.0f), green },
+		{ XMFLOAT3(+0.0f, +0.0f, +0.5f), red },
+		{ XMFLOAT3(+0.0f, +0.0f, -0.5f), blue },
 	};
 
 	Vertex vertices2[] =
@@ -181,7 +190,7 @@ void Game::CreateBasicGeometry()
 	// - Indices are technically not required if the vertices are in the buffer 
 	//    in the correct order and each one will be used exactly once
 	// - But just to see how it's done...
-	int indices1[] = { 0, 1, 2 };
+	int indices1[] = { 0, 1, 4, 0, 4, 2, 0, 3, 1, 0, 2, 3 };
 	int indices2[] = { 0, 1, 2, 0, 2, 3 };
 	int indices3[] = { 0, 2, 1, 0, 3, 2, 0, 5, 3, 3, 5, 4 };
 
@@ -190,7 +199,9 @@ void Game::CreateBasicGeometry()
 	geometry2 = new Mesh(vertices2, 4, indices2, 6, device);
 	geometry3 = new Mesh(vertices3, 6, indices3, 12, device);
 	
-	test1 = new GameEntity(geometry1);
+	//Create GameEntity objects and accept pointer of Mesh
+	entity1 = new GameEntity(geometry1);
+	entity2 = new GameEntity(geometry1);
 }
 
 
@@ -221,16 +232,19 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
 
-	float sinTime = sin(totalTime * 10);
+	float sinTime = sin(totalTime );
 	float cosTime = cos(totalTime * 10);
-	XMMATRIX worldMat = XMLoadFloat4x4(&worldMatrix);
-	XMMATRIX translation = XMMatrixTranslation(0.0f, sinTime, 0.0f);
-	XMMATRIX rot = XMMatrixRotationZ(180);
-	//XMMATRIX scale = XMMatrixScaling(sin(deltaTime), sin(deltaTime), sin(deltaTime));
 
-	worldMat = rot;//* translation;
+	//Set entity1 worldTransformation
+	entity1->SetTranslation(0.0f, sinTime, 0.0f);
+	entity1->SetRotation(0.0f, totalTime, 0.0f);
+	//entity1->SetScale(sinTime, sinTime, sinTime);
+	entity1->SetWorldMatrix();
 	
-	XMStoreFloat4x4(&worldMatrix, XMMatrixTranspose(worldMat));
+	/*entity2->SetTranslation(sinTime, 0.0f, 0.0f);
+	entity2->SetRotation(0.0f, 0.0f, totalTime);
+	entity2->SetScale(sinTime, sinTime, sinTime);
+	entity2->SetWorldMatrix();*/
 
 }
 
@@ -252,12 +266,24 @@ void Game::Draw(float deltaTime, float totalTime)
 		1.0f,
 		0);
 
+	//Shader for the game entities
+	Shader(entity1);
+	Shader(entity2);
+
+	// Present the back buffer to the user
+	//  - Puts the final frame we're drawing into the window so the user can see it
+	//  - Do this exactly ONCE PER FRAME (always at the very end of the frame)
+	swapChain->Present(0, 0);
+}
+
+void Game::Shader(GameEntity* entity) 
+{
 	// Send data to shader variables
 	//  - Do this ONCE PER OBJECT you're drawing
 	//  - This is actually a complex process of copying data to a local buffer
 	//    and then copying that entire buffer to the GPU.  
 	//  - The "SimpleShader" class handles all of that for you.
-	vertexShader->SetMatrix4x4("world", worldMatrix);
+	vertexShader->SetMatrix4x4("world", entity->GetWorldMatrix());
 	vertexShader->SetMatrix4x4("view", viewMatrix);
 	vertexShader->SetMatrix4x4("projection", projectionMatrix);
 
@@ -278,8 +304,8 @@ void Game::Draw(float deltaTime, float totalTime)
 	//    have different geometry.
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
-	vertexBuffer = test1->GetVertexBuffer();
-	indexBuffer = test1->GetIndexBuffer();
+	vertexBuffer = entity->GetVertexBuffer();
+	indexBuffer = entity->GetIndexBuffer();
 	context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 	context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
@@ -289,49 +315,9 @@ void Game::Draw(float deltaTime, float totalTime)
 	//  - DrawIndexed() uses the currently set INDEX BUFFER to look up corresponding
 	//     vertices in the currently set VERTEX BUFFER
 	context->DrawIndexed(
-		3,     // The number of indices to use (we could draw a subset if we wanted)
+		entity->GetIndexCount(),     // The number of indices to use (we could draw a subset if we wanted)
 		0,     // Offset to the first index we want to use
 		0);    // Offset to add to each index when looking up vertices
-	
-
-
-	//vertexBuffer = geometry2->GetVertexBuffer();
-	//indexBuffer = geometry2->GetIndexBuffer();
-	//context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	//context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-
-
-	//// Finally do the actual drawing
-	////  - Do this ONCE PER OBJECT you intend to draw
-	////  - This will use all of the currently set DirectX "stuff" (shaders, buffers, etc)
-	////  - DrawIndexed() uses the currently set INDEX BUFFER to look up corresponding
-	////     vertices in the currently set VERTEX BUFFER
-	//context->DrawIndexed(
-	//	6,     // The number of indices to use (we could draw a subset if we wanted)
-	//	0,     // Offset to the first index we want to use
-	//	0);    // Offset to add to each index when looking up vertices
-
-
-	//vertexBuffer = geometry3->GetVertexBuffer();
-	//indexBuffer = geometry3->GetIndexBuffer();
-	//context->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	//context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-
-	//// Finally do the actual drawing
-	////  - Do this ONCE PER OBJECT you intend to draw
-	////  - This will use all of the currently set DirectX "stuff" (shaders, buffers, etc)
-	////  - DrawIndexed() uses the currently set INDEX BUFFER to look up corresponding
-	////     vertices in the currently set VERTEX BUFFER
-	//context->DrawIndexed(
-	//	12,     // The number of indices to use (we could draw a subset if we wanted)
-	//	0,     // Offset to the first index we want to use
-	//	0);    // Offset to add to each index when looking up vertices
-
-
-	// Present the back buffer to the user
-	//  - Puts the final frame we're drawing into the window so the user can see it
-	//  - Do this exactly ONCE PER FRAME (always at the very end of the frame)
-	swapChain->Present(0, 0);
 }
 
 
