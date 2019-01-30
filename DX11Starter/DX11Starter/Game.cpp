@@ -220,6 +220,18 @@ void Game::Update(float deltaTime, float totalTime)
 	// Quit if the escape key is pressed
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
+
+	float sinTime = sin(totalTime * 10);
+	float cosTime = cos(totalTime * 10);
+	XMMATRIX worldMat = XMLoadFloat4x4(&worldMatrix);
+	XMMATRIX translation = XMMatrixTranslation(0.0f, sinTime, 0.0f);
+	XMMATRIX rot = XMMatrixRotationZ(180);
+	//XMMATRIX scale = XMMatrixScaling(sin(deltaTime), sin(deltaTime), sin(deltaTime));
+
+	worldMat = rot;//* translation;
+	
+	XMStoreFloat4x4(&worldMatrix, XMMatrixTranspose(worldMat));
+
 }
 
 // --------------------------------------------------------
@@ -245,7 +257,6 @@ void Game::Draw(float deltaTime, float totalTime)
 	//  - This is actually a complex process of copying data to a local buffer
 	//    and then copying that entire buffer to the GPU.  
 	//  - The "SimpleShader" class handles all of that for you.
-	worldMatrix = test1->GetWorldMatrix();
 	vertexShader->SetMatrix4x4("world", worldMatrix);
 	vertexShader->SetMatrix4x4("view", viewMatrix);
 	vertexShader->SetMatrix4x4("projection", projectionMatrix);
