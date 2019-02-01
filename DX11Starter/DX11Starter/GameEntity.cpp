@@ -66,10 +66,10 @@ int GameEntity::GetIndexCount()
 void GameEntity::SetWorldMatrix()
 {
 	//Combine the translation, rotation and scale to the worldmatrix, remember the Transpose before storing
-	DirectX::XMMATRIX objtranslation = DirectX::XMLoadFloat4x4(&translation);
+	DirectX::XMMATRIX objTranslation = DirectX::XMLoadFloat4x4(&translation);
 	DirectX::XMMATRIX objRotation    = DirectX::XMLoadFloat4x4(&rotation);
 	DirectX::XMMATRIX objScale       = DirectX::XMLoadFloat4x4(&scale);
-	DirectX::XMMATRIX objWorldMatrix = objScale * objRotation * objtranslation;
+	DirectX::XMMATRIX objWorldMatrix = objScale * objRotation * objTranslation* objRotation;
 	DirectX::XMStoreFloat4x4(&worldMatrix, DirectX::XMMatrixTranspose(objWorldMatrix));
 }
 

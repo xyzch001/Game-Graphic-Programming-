@@ -59,9 +59,9 @@ Game::~Game()
 	//Delete GameEntity objects 
 	delete entity1;
 	delete entity2;
-	/*delete entity3;
+	delete entity3;
 	delete entity4;
-	delete entity5;*/
+	delete entity5;
 }
 
 // --------------------------------------------------------
@@ -159,29 +159,32 @@ void Game::CreateBasicGeometry()
 	//    over to a DirectX-controlled data structure (the vertex buffer)
 	Vertex vertices1[] =
 	{
-		{ XMFLOAT3(+0.0f, +0.5f, +0.0f), red },
-		{ XMFLOAT3(+0.5f, 0.0f, +0.0f), blue },
-		{ XMFLOAT3(-0.5f, -0.0f, +0.0f), green },
-		{ XMFLOAT3(+0.0f, +0.0f, +0.5f), red },
-		{ XMFLOAT3(+0.0f, +0.0f, -0.5f), blue },
+		{ XMFLOAT3(+0.0f, +0.6f, +0.0f), red },
+		{ XMFLOAT3(+0.5f, +0.1f, +0.0f), blue },
+		{ XMFLOAT3(-0.5f, +0.1f, +0.0f), green },
+		{ XMFLOAT3(+0.0f, +0.1f, +0.5f), red },
+		{ XMFLOAT3(+0.0f, +0.1f, -0.5f), blue },
 	};
 
 	Vertex vertices2[] =
 	{
-		{ XMFLOAT3(+2.75f, +0.5f, +0.0f), red },
-		{ XMFLOAT3(+2.75f, -0.5f, +0.0f), blue },
-		{ XMFLOAT3(+1.25f, -0.5f, +0.0f), green },
-	    { XMFLOAT3(+1.25f, +0.5f, +0.0f), red },
+		{ XMFLOAT3(+0.0f, -0.6f, +0.0f), red },
+		{ XMFLOAT3(+0.5f, -0.1f, +0.0f), blue },
+		{ XMFLOAT3(-0.5f, -0.1f, +0.0f), green },
+	    { XMFLOAT3(+0.0f, -0.1f, +0.5f), red },
+		{ XMFLOAT3(+0.0f, -0.1f, -0.5f), blue },
 	};
 
 	Vertex vertices3[] =
 	{
-		{ XMFLOAT3(-2.75f, +0.5f, +0.0f), red },
-		{ XMFLOAT3(-3.25f, +0.0f, +0.0f), blue },
-		{ XMFLOAT3(-2.75f, -0.5f, +0.0f), green },
-		{ XMFLOAT3(-1.25f, -0.5f, +0.0f), red },
-		{ XMFLOAT3(-0.75f, +0.0f, +0.0f), blue },
-		{ XMFLOAT3(-1.25f, +0.5f, +0.0f), green },
+		{ XMFLOAT3(-0.25f, +0.25f, -0.25f), red },
+		{ XMFLOAT3(-0.25f, -0.25f, -0.25f), blue },
+		{ XMFLOAT3(+0.25f, +0.25f, -0.25f), green },
+		{ XMFLOAT3(+0.25f, -0.25f, -0.25f), red },
+		{ XMFLOAT3(+0.25f, +0.25f, +0.25f), blue },
+		{ XMFLOAT3(+0.25f, -0.25f, +0.25f), green },
+		{ XMFLOAT3(-0.25f, +0.25f, +0.25f), red },
+		{ XMFLOAT3(-0.25f, -0.25f, +0.25f), blue },
 	};
 
 
@@ -190,18 +193,21 @@ void Game::CreateBasicGeometry()
 	// - Indices are technically not required if the vertices are in the buffer 
 	//    in the correct order and each one will be used exactly once
 	// - But just to see how it's done...
-	int indices1[] = { 0, 1, 4, 0, 4, 2, 0, 3, 1, 0, 2, 3 };
-	int indices2[] = { 0, 1, 2, 0, 2, 3 };
-	int indices3[] = { 0, 2, 1, 0, 3, 2, 0, 5, 3, 3, 5, 4 };
+	int indices1[] = { 0, 1, 4, 0, 4, 2, 0, 3, 1, 0, 2, 3, 1, 2, 4, 2, 1, 3 };
+	int indices2[] = { 0, 2, 4, 0, 4, 1, 2, 1, 4, 2, 3, 1, 0, 3, 2, 0, 1, 3 };
+	int indices3[] = { 0, 2, 1, 1, 2, 3, 2, 5, 3, 2, 4, 5, 4, 7, 5, 4, 6, 7, 0, 1, 7, 0, 7, 6, 0, 6, 2, 2, 6, 4, 1, 3, 7, 3, 5, 7};
 
 	// Create Mesh object and pass the array of vertices and indices.
-	geometry1 = new Mesh(vertices1, 3, indices1, 3, device);
-	geometry2 = new Mesh(vertices2, 4, indices2, 6, device);
-	geometry3 = new Mesh(vertices3, 6, indices3, 12, device);
+	geometry1 = new Mesh(vertices1, 5, indices1, 18, device);
+	geometry2 = new Mesh(vertices2, 5, indices2, 18, device);
+	geometry3 = new Mesh(vertices3, 8, indices3, 36, device);
 	
 	//Create GameEntity objects and accept pointer of Mesh
 	entity1 = new GameEntity(geometry1);
-	entity2 = new GameEntity(geometry1);
+	entity2 = new GameEntity(geometry2);
+	entity3 = new GameEntity(geometry3);
+	entity4 = new GameEntity(geometry3);
+	entity5 = new GameEntity(geometry3);
 }
 
 
@@ -232,19 +238,38 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
 
-	float sinTime = sin(totalTime );
+	float sinTime = sin(totalTime )*2;
 	float cosTime = cos(totalTime * 10);
 
 	//Set entity1 worldTransformation
 	entity1->SetTranslation(0.0f, sinTime, 0.0f);
 	entity1->SetRotation(0.0f, totalTime, 0.0f);
-	//entity1->SetScale(sinTime, sinTime, sinTime);
+	entity1->SetScale(sinTime, sinTime, sinTime);
 	entity1->SetWorldMatrix();
 	
-	/*entity2->SetTranslation(sinTime, 0.0f, 0.0f);
-	entity2->SetRotation(0.0f, 0.0f, totalTime);
+	//Set entity2 worldTransformation
+	entity2->SetTranslation(0.0f, sinTime, 0.0f);
+	entity2->SetRotation(0.0f, totalTime, 0.0f );
 	entity2->SetScale(sinTime, sinTime, sinTime);
-	entity2->SetWorldMatrix();*/
+	entity2->SetWorldMatrix();
+
+	//Set entity3 worldTransformation
+	entity3->SetTranslation(-2.0f, 0.0f, 0.0f);
+	entity3->SetRotation(0.0f, totalTime, 0.0f);
+	entity3->SetScale(sinTime, sinTime, sinTime);
+	entity3->SetWorldMatrix();
+
+	//Set entity4 worldTransformation
+	entity4->SetTranslation(+2.0f, 0.0f, 0.0f);
+	entity4->SetRotation(0.0f, totalTime, 0.0f);
+	entity4->SetScale(sinTime, sinTime, sinTime);
+	entity4->SetWorldMatrix();
+
+	//Set entity5 worldTransformation
+	entity5->SetTranslation(0.0f, 0.0f, 0.0f);
+	entity5->SetRotation(0.0f, totalTime, 0.0f);
+	entity5->SetScale(sinTime, sinTime, sinTime);
+	entity5->SetWorldMatrix();
 
 }
 
@@ -269,6 +294,9 @@ void Game::Draw(float deltaTime, float totalTime)
 	//Shader for the game entities
 	Shader(entity1);
 	Shader(entity2);
+	Shader(entity3);
+	Shader(entity4);
+	Shader(entity5);
 
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it
