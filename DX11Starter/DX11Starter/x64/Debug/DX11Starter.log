@@ -1,2 +1,10 @@
-﻿  GameEntity.cpp
-  DX11Starter.vcxproj -> E:\learning\WeihaoYan\GameGraphicProgramming\Game-Graphic-Programming-\DX11Starter\x64\Debug\DX11Starter.exe
+﻿  compilation object save succeeded; see Z:\IGMProfile\Desktop\GGP\DX11Starter\x64\Debug\PixelShader.cso
+  compilation object save succeeded; see Z:\IGMProfile\Desktop\GGP\DX11Starter\x64\Debug\VertexShader.cso
+  DXCore.cpp
+  Game.cpp
+  GameEntity.cpp
+  Main.cpp
+  Mesh.cpp
+  SimpleShader.cpp
+  Generating Code...
+  DX11Starter.vcxproj -> Z:\IGMProfile\Desktop\GGP\DX11Starter\x64\Debug\DX11Starter.exe
