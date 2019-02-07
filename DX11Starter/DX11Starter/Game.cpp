@@ -62,6 +62,9 @@ Game::~Game()
 	delete entity3;
 	delete entity4;
 	delete entity5;
+
+	//Delete Camera
+	delete cameraObj;
 }
 
 // --------------------------------------------------------
@@ -106,40 +109,44 @@ void Game::LoadShaders()
 // --------------------------------------------------------
 void Game::CreateMatrices()
 {
-	// Set up world matrix
-	// - In an actual game, each object will need one of these and they should
-	//    update when/if the object moves (every frame)
-	// - You'll notice a "transpose" happening below, which is redundant for
-	//    an identity matrix.  This is just to show that HLSL expects a different
-	//    matrix (column major vs row major) than the DirectX Math library
-	XMMATRIX W = XMMatrixIdentity();
-	XMStoreFloat4x4(&worldMatrix, XMMatrixTranspose(W)); // Transpose for HLSL!
+	//// Set up world matrix
+	//// - In an actual game, each object will need one of these and they should
+	////    update when/if the object moves (every frame)
+	//// - You'll notice a "transpose" happening below, which is redundant for
+	////    an identity matrix.  This is just to show that HLSL expects a different
+	////    matrix (column major vs row major) than the DirectX Math library
+	//XMMATRIX W = XMMatrixIdentity();
+	//XMStoreFloat4x4(&worldMatrix, XMMatrixTranspose(W)); // Transpose for HLSL!
 
-	// Create the View matrix
-	// - In an actual game, recreate this matrix every time the camera 
-	//    moves (potentially every frame)
-	// - We're using the LOOK TO function, which takes the position of the
-	//    camera and the direction vector along which to look (as well as "up")
-	// - Another option is the LOOK AT function, to look towards a specific
-	//    point in 3D space
-	XMVECTOR pos = XMVectorSet(0, 0, -5, 0);
-	XMVECTOR dir = XMVectorSet(0, 0, 1, 0);
-	XMVECTOR up = XMVectorSet(0, 1, 0, 0);
-	XMMATRIX V = XMMatrixLookToLH(
-		pos,     // The position of the "camera"
-		dir,     // Direction the camera is looking
-		up);     // "Up" direction in 3D space (prevents roll)
-	XMStoreFloat4x4(&viewMatrix, XMMatrixTranspose(V)); // Transpose for HLSL!
+	//// Create the View matrix
+	//// - In an actual game, recreate this matrix every time the camera 
+	////    moves (potentially every frame)
+	//// - We're using the LOOK TO function, which takes the position of the
+	////    camera and the direction vector along which to look (as well as "up")
+	//// - Another option is the LOOK AT function, to look towards a specific
+	////    point in 3D space
+	//XMVECTOR pos = XMVectorSet(0, 0, -5, 0);
+	//XMVECTOR dir = XMVectorSet(0, 0, 1, 0);
+	//XMVECTOR up = XMVectorSet(0, 1, 0, 0);
+	//XMMATRIX V = XMMatrixLookToLH(
+	//	pos,     // The position of the "camera"
+	//	dir,     // Direction the camera is looking
+	//	up);     // "Up" direction in 3D space (prevents roll)
+	//XMStoreFloat4x4(&viewMatrix, XMMatrixTranspose(V)); // Transpose for HLSL!
 
-	// Create the Projection matrix
-	// - This should match the window's aspect ratio, and also update anytime
-	//    the window resizes (which is already happening in OnResize() below)
-	XMMATRIX P = XMMatrixPerspectiveFovLH(
-		0.25f * 3.1415926535f,		// Field of View Angle
-		(float)width / height,		// Aspect ratio
-		0.1f,						// Near clip plane distance
-		100.0f);					// Far clip plane distance
-	XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
+	//// Create the Projection matrix
+	//// - This should match the window's aspect ratio, and also update anytime
+	////    the window resizes (which is already happening in OnResize() below)
+	//XMMATRIX P = XMMatrixPerspectiveFovLH(
+	//	0.25f * 3.1415926535f,		// Field of View Angle
+	//	(float)width / height,		// Aspect ratio
+	//	0.1f,						// Near clip plane distance
+	//	100.0f);					// Far clip plane distance
+	//XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
+
+	cameraObj = new Camera(float(width), float(height));
+
+
 }
 
 
@@ -220,13 +227,15 @@ void Game::OnResize()
 	// Handle base-level DX resize stuff
 	DXCore::OnResize();
 
-	// Update our projection matrix since the window size changed
-	XMMATRIX P = XMMatrixPerspectiveFovLH(
-		0.25f * 3.1415926535f,	// Field of View Angle
-		(float)width / height,	// Aspect ratio
-		0.1f,				  	// Near clip plane distance
-		100.0f);			  	// Far clip plane distance
-	XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
+	cameraObj->setProjection(float(width), float(height), 0.25f * 3.1415926535f);
+
+	//// Update our projection matrix since the window size changed
+	//XMMATRIX P = XMMatrixPerspectiveFovLH(
+	//	0.25f * 3.1415926535f,	// Field of View Angle
+	//	(float)width / height,	// Aspect ratio
+	//	0.1f,				  	// Near clip plane distance
+	//	100.0f);			  	// Far clip plane distance
+	//XMStoreFloat4x4(&projectionMatrix, XMMatrixTranspose(P)); // Transpose for HLSL!
 }
 
 // --------------------------------------------------------
@@ -271,6 +280,10 @@ void Game::Update(float deltaTime, float totalTime)
 	entity5->SetScale(sinTime, sinTime, sinTime);
 	entity5->SetWorldMatrix();
 
+	cameraObj->Update(deltaTime);
+
+	
+
 }
 
 // --------------------------------------------------------
@@ -312,8 +325,8 @@ void Game::Shader(GameEntity* entity)
 	//    and then copying that entire buffer to the GPU.  
 	//  - The "SimpleShader" class handles all of that for you.
 	vertexShader->SetMatrix4x4("world", entity->GetWorldMatrix());
-	vertexShader->SetMatrix4x4("view", viewMatrix);
-	vertexShader->SetMatrix4x4("projection", projectionMatrix);
+	vertexShader->SetMatrix4x4("view", cameraObj->getView());
+	vertexShader->SetMatrix4x4("projection", cameraObj->getProjection());
 
 	// Once you've set all of the data you care to change for
 	// the next draw call, you need to actually send it to the GPU
@@ -364,6 +377,8 @@ void Game::OnMouseDown(WPARAM buttonState, int x, int y)
 	prevMousePos.x = x;
 	prevMousePos.y = y;
 
+	
+
 	// Caputure the mouse so we keep getting mouse move
 	// events even if the mouse leaves the window.  we'll be
 	// releasing the capture once a mouse button is released
@@ -376,6 +391,7 @@ void Game::OnMouseDown(WPARAM buttonState, int x, int y)
 void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 {
 	// Add any custom code here...
+
 
 	// We don't care about the tracking the cursor outside
 	// the window anymore (we're not dragging if the mouse is up)
@@ -390,10 +406,16 @@ void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 void Game::OnMouseMove(WPARAM buttonState, int x, int y)
 {
 	// Add any custom code here...
-
+	float deltaX = x - prevMousePos.x;
+	float deltaY = y - prevMousePos.y;
+	if (buttonState & 0x0001) {
+		cameraObj->setRotationX(deltaX);
+		cameraObj->setRotationY(deltaY);
+	}
 	// Save the previous mouse position, so we have it for the future
 	prevMousePos.x = x;
 	prevMousePos.y = y;
+
 }
 
 // --------------------------------------------------------

@@ -1,1 +1,12 @@
+<<<<<<< HEAD
 ﻿  DX11Starter.vcxproj -> E:\learning\WeihaoYan\GameGraphicProgramming\Game-Graphic-Programming-\DX11Starter\x64\Debug\DX11Starter.exe
+=======
+﻿  Game.cpp
+z:\igmprofile\desktop\ggp\dx11starter\dx11starter\game.cpp(409): warning C4244: 'initializing': conversion from 'LONG' to 'float', possible loss of data
+z:\igmprofile\desktop\ggp\dx11starter\dx11starter\game.cpp(410): warning C4244: 'initializing': conversion from 'LONG' to 'float', possible loss of data
+  GameEntity.cpp
+  Main.cpp
+  Material.cpp
+  Generating Code...
+  DX11Starter.vcxproj -> Z:\IGMProfile\Desktop\GGP\DX11Starter\x64\Debug\DX11Starter.exe
+>>>>>>> 00ea33535f1ecfa86b992b0a7e6f52e1783ae5cf
