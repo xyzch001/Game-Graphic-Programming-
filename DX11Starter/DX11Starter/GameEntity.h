@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Mesh.h"
+#include "Material.h"
 
 class GameEntity
 {
@@ -34,6 +35,7 @@ private:
 	//Mesh object to store the vertex buffer and index buffer
 	Mesh* gameObj;
 
+	Material* material;
 
 };
 

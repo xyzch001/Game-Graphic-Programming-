@@ -3,19 +3,29 @@
 #include <DirectXMath.h>
 #include <vector>
 #include <string>
+#include <Windows.h>
 
 class Camera
 {
 public:
-	Camera();
+	Camera(float screenWidth, float screenHeight);
 	~Camera();
-	void Update();
+	
+	void Update(float deltaTime);
+	void cameraMovement(float detlaTime);
+	DirectX::XMFLOAT4X4 getView();
+	DirectX::XMFLOAT4X4 getProjection();
+	void setProjection(float width, float height, float fov);
+	void setRotationX(float x);
+	void setRotationY(float y);
 
 private:
 	DirectX::XMFLOAT4X4 view;
+	DirectX::XMFLOAT4X4 projection;
+	
 	DirectX::XMVECTOR cameraPosition;
-	DirectX::XMVECTOR cameraRotation;
-	DirectX::XMVECTOR cameraUp = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	DirectX::XMVECTOR cameraDirection;
+	DirectX::XMVECTOR cameraUp;
 	float aroundX;
 	float aroundY;
 
