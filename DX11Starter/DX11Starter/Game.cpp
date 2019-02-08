@@ -161,43 +161,47 @@ void Game::CreateMatrices()
 // --------------------------------------------------------
 void Game::CreateBasicGeometry()
 {
-	// Create some temporary variables to represent colors
-	// - Not necessary, just makes things more readable
-	XMFLOAT4 red = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
-	XMFLOAT4 green = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
-	XMFLOAT4 blue = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+	//// Create some temporary variables to represent colors
+	//// - Not necessary, just makes things more readable
+	//XMFLOAT4 red = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+	//XMFLOAT4 green = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	//XMFLOAT4 blue = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+
+	XMFLOAT3 normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
+	XMFLOAT2 uv = XMFLOAT2(0.0f, 0.0f);
+
 
 	// Set up the vertices of the triangle we would like to draw
 	// - We're going to copy this array, exactly as it exists in memory
 	//    over to a DirectX-controlled data structure (the vertex buffer)
 	Vertex vertices1[] =
 	{
-		{ XMFLOAT3(+0.0f, +0.6f, +0.0f), red },
-		{ XMFLOAT3(+0.5f, +0.1f, +0.0f), blue },
-		{ XMFLOAT3(-0.5f, +0.1f, +0.0f), green },
-		{ XMFLOAT3(+0.0f, +0.1f, +0.5f), red },
-		{ XMFLOAT3(+0.0f, +0.1f, -0.5f), blue },
+		{ XMFLOAT3(+0.0f, +0.6f, +0.0f), normal, uv },
+		{ XMFLOAT3(+0.5f, +0.1f, +0.0f), normal, uv },
+		{ XMFLOAT3(-0.5f, +0.1f, +0.0f), normal, uv },
+		{ XMFLOAT3(+0.0f, +0.1f, +0.5f), normal, uv },
+		{ XMFLOAT3(+0.0f, +0.1f, -0.5f), normal, uv },
 	};
 
 	Vertex vertices2[] =
 	{
-		{ XMFLOAT3(+0.0f, -0.6f, +0.0f), red },
-		{ XMFLOAT3(+0.5f, -0.1f, +0.0f), blue },
-		{ XMFLOAT3(-0.5f, -0.1f, +0.0f), green },
-	    { XMFLOAT3(+0.0f, -0.1f, +0.5f), red },
-		{ XMFLOAT3(+0.0f, -0.1f, -0.5f), blue },
+		{ XMFLOAT3(+0.0f, -0.6f, +0.0f), normal, uv },
+		{ XMFLOAT3(+0.5f, -0.1f, +0.0f), normal, uv },
+		{ XMFLOAT3(-0.5f, -0.1f, +0.0f), normal, uv },
+	    { XMFLOAT3(+0.0f, -0.1f, +0.5f), normal, uv },
+		{ XMFLOAT3(+0.0f, -0.1f, -0.5f), normal, uv },
 	};
 
 	Vertex vertices3[] =
 	{
-		{ XMFLOAT3(-0.25f, +0.25f, -0.25f), red },
-		{ XMFLOAT3(-0.25f, -0.25f, -0.25f), blue },
-		{ XMFLOAT3(+0.25f, +0.25f, -0.25f), green },
-		{ XMFLOAT3(+0.25f, -0.25f, -0.25f), red },
-		{ XMFLOAT3(+0.25f, +0.25f, +0.25f), blue },
-		{ XMFLOAT3(+0.25f, -0.25f, +0.25f), green },
-		{ XMFLOAT3(-0.25f, +0.25f, +0.25f), red },
-		{ XMFLOAT3(-0.25f, -0.25f, +0.25f), blue },
+		{ XMFLOAT3(-0.25f, +0.25f, -0.25f), normal, uv },
+		{ XMFLOAT3(-0.25f, -0.25f, -0.25f), normal, uv },
+		{ XMFLOAT3(+0.25f, +0.25f, -0.25f), normal, uv },
+		{ XMFLOAT3(+0.25f, -0.25f, -0.25f), normal, uv },
+		{ XMFLOAT3(+0.25f, +0.25f, +0.25f), normal, uv },
+		{ XMFLOAT3(+0.25f, -0.25f, +0.25f), normal, uv },
+		{ XMFLOAT3(-0.25f, +0.25f, +0.25f), normal, uv },
+		{ XMFLOAT3(-0.25f, -0.25f, +0.25f), normal, uv },
 	};
 
 

@@ -1,15 +1,18 @@
 #pragma once
 
 #include "SimpleShader.h"
-#include <DirectXMath.h>
 #include "Vertex.h"
 #include <d3d11.h>
+#include <fstream>;
 
 class Mesh
 {
 public:
 	Mesh(Vertex* vertices, int numVertices,  int* indices, int numIndices, ID3D11Device* device);
+	Mesh(char* fileName);
 	~Mesh();
+
+
 
 	//returns the pointer to the vertex buffer object
 	ID3D11Buffer* GetVertexBuffer();
