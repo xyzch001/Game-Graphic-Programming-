@@ -65,6 +65,9 @@ Game::~Game()
 
 	//Delete Camera
 	delete cameraObj;
+
+	//Delete Material
+	delete material;
 }
 
 // --------------------------------------------------------
@@ -99,6 +102,9 @@ void Game::LoadShaders()
 
 	pixelShader = new SimplePixelShader(device, context);
 	pixelShader->LoadShaderFile(L"PixelShader.cso");
+
+	material = new Material(vertexShader, pixelShader);
+
 }
 
 
@@ -210,11 +216,11 @@ void Game::CreateBasicGeometry()
 	geometry3 = new Mesh(vertices3, 8, indices3, 36, device);
 	
 	//Create GameEntity objects and accept pointer of Mesh
-	entity1 = new GameEntity(geometry1);
-	entity2 = new GameEntity(geometry2);
-	entity3 = new GameEntity(geometry3);
-	entity4 = new GameEntity(geometry3);
-	entity5 = new GameEntity(geometry3);
+	entity1 = new GameEntity(geometry1, material);
+	entity2 = new GameEntity(geometry2, material);
+	entity3 = new GameEntity(geometry3, material);
+	entity4 = new GameEntity(geometry3, material);
+	entity5 = new GameEntity(geometry3, material);
 }
 
 
@@ -253,33 +259,34 @@ void Game::Update(float deltaTime, float totalTime)
 	//Set entity1 worldTransformation
 	entity1->SetTranslation(0.0f, sinTime, 0.0f);
 	entity1->SetRotation(0.0f, totalTime, 0.0f);
-	entity1->SetScale(sinTime, sinTime, sinTime);
+	//entity1->SetScale(sinTime, sinTime, sinTime);
 	entity1->SetWorldMatrix();
 	
 	//Set entity2 worldTransformation
 	entity2->SetTranslation(0.0f, sinTime, 0.0f);
 	entity2->SetRotation(0.0f, totalTime, 0.0f );
-	entity2->SetScale(sinTime, sinTime, sinTime);
+	//entity2->SetScale(sinTime, sinTime, sinTime);
 	entity2->SetWorldMatrix();
 
 	//Set entity3 worldTransformation
 	entity3->SetTranslation(-2.0f, 0.0f, 0.0f);
-	entity3->SetRotation(0.0f, totalTime, 0.0f);
-	entity3->SetScale(sinTime, sinTime, sinTime);
+	entity3->SetRotation(0.0f, -totalTime, 0.0f);
+	//entity3->SetScale(sinTime, sinTime, sinTime);
 	entity3->SetWorldMatrix();
 
 	//Set entity4 worldTransformation
 	entity4->SetTranslation(+2.0f, 0.0f, 0.0f);
 	entity4->SetRotation(0.0f, totalTime, 0.0f);
-	entity4->SetScale(sinTime, sinTime, sinTime);
+	//entity4->SetScale(sinTime, sinTime, sinTime);
 	entity4->SetWorldMatrix();
 
 	//Set entity5 worldTransformation
 	entity5->SetTranslation(0.0f, 0.0f, 0.0f);
 	entity5->SetRotation(0.0f, totalTime, 0.0f);
-	entity5->SetScale(sinTime, sinTime, sinTime);
+	//entity5->SetScale(sinTime, sinTime, sinTime);
 	entity5->SetWorldMatrix();
 
+	//Update Camera
 	cameraObj->Update(deltaTime);
 
 	
@@ -319,26 +326,11 @@ void Game::Draw(float deltaTime, float totalTime)
 
 void Game::Shader(GameEntity* entity) 
 {
-	// Send data to shader variables
-	//  - Do this ONCE PER OBJECT you're drawing
-	//  - This is actually a complex process of copying data to a local buffer
-	//    and then copying that entire buffer to the GPU.  
-	//  - The "SimpleShader" class handles all of that for you.
-	vertexShader->SetMatrix4x4("world", entity->GetWorldMatrix());
-	vertexShader->SetMatrix4x4("view", cameraObj->getView());
-	vertexShader->SetMatrix4x4("projection", cameraObj->getProjection());
-
-	// Once you've set all of the data you care to change for
-	// the next draw call, you need to actually send it to the GPU
-	//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
-	vertexShader->CopyAllBufferData();
-
-	// Set the vertex and pixel shaders to use for the next Draw() command
-	//  - These don't technically need to be set every frame...YET
-	//  - Once you start applying different shaders to different objects,
-	//    you'll need to swap the current shaders before each draw
-	vertexShader->SetShader();
-	pixelShader->SetShader();
+	//prepareMaterial
+	//Send data to shader variables
+	//CopyAllBufferData 
+	//Set the bertex and pixel shader to use for next Draw()
+	entity->prepareMaterial(cameraObj->getView(), cameraObj->getProjection());
 
 	// Set buffers in the input assembler
 	//  - Do this ONCE PER OBJECT you're drawing, since each object might

@@ -3,10 +3,11 @@
 #include "Mesh.h"
 #include "Material.h"
 
+
 class GameEntity
 {
 public:
-	GameEntity(Mesh* object);
+	GameEntity(Mesh* meshObject, Material* materialObj);
 	~GameEntity();
 
 	//Get the Mesh members
@@ -24,6 +25,8 @@ public:
 	void MoveForward(float x, float y, float z);
 	//Movement Methods
 
+	//Material
+	void prepareMaterial(DirectX::XMFLOAT4X4 viewMatrix, DirectX::XMFLOAT4X4 projectionMatrix);
 
 private:
 	//the translation, rotation and scale of this entity
@@ -35,6 +38,7 @@ private:
 	//Mesh object to store the vertex buffer and index buffer
 	Mesh* gameObj;
 
+	//Material object to store the vertex shader and pixel shader
 	Material* material;
 
 };

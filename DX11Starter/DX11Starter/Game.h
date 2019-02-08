@@ -65,7 +65,11 @@ private:
 	// determining how far the mouse moved in a single frame.
 	POINT prevMousePos;
 
+	//The pointer of Camera
 	Camera* cameraObj;
+
+	//The pointer of Material
+	Material* material;
 	
 };
 

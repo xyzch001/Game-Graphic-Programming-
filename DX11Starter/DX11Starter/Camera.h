@@ -11,7 +11,9 @@ public:
 	Camera(float screenWidth, float screenHeight);
 	~Camera();
 	
+	//Update viewMatrix and projectionMatrix of Camera
 	void Update(float deltaTime);
+	
 	void cameraMovement(float detlaTime);
 	DirectX::XMFLOAT4X4 getView();
 	DirectX::XMFLOAT4X4 getProjection();

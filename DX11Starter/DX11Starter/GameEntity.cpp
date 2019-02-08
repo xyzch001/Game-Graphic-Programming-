@@ -2,10 +2,13 @@
 
 
 
-GameEntity::GameEntity(Mesh* object)
+GameEntity::GameEntity(Mesh* meshObject, Material* materialObj)
 {
 	//accept the pointer of Mesh object
-	gameObj = object;
+	gameObj = meshObject;
+
+	//accept the pointer of Material object
+	material = materialObj;
 	
 	//Set default vaules for the matrix
 	translation =
@@ -104,4 +107,28 @@ void GameEntity::Move(float x, float y, float z)
 
 void GameEntity::MoveForward(float x, float y, float z)
 {
+}
+
+void GameEntity::prepareMaterial(DirectX::XMFLOAT4X4 viewMatrix, DirectX::XMFLOAT4X4 projectionMatrix)
+{
+	// Send data to shader variables
+	//  - Do this ONCE PER OBJECT you're drawing
+	//  - This is actually a complex process of copying data to a local buffer
+	//    and then copying that entire buffer to the GPU.  
+	//  - The "SimpleShader" class handles all of that for you.
+	material->getVertexShader()->SetMatrix4x4("world", worldMatrix);
+	material->getVertexShader()->SetMatrix4x4("view", viewMatrix);
+	material->getVertexShader()->SetMatrix4x4("projection", projectionMatrix);
+
+	// Once you've set all of the data you care to change for
+	// the next draw call, you need to actually send it to the GPU
+	//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
+	material->getVertexShader()->CopyAllBufferData();
+
+	// Set the vertex and pixel shaders to use for the next Draw() command
+	//  - These don't technically need to be set every frame...YET
+	//  - Once you start applying different shaders to different objects,
+	//    you'll need to swap the current shaders before each draw
+	material->getVertexShader()->SetShader();
+	material->getPixelShader()->SetShader();
 }
