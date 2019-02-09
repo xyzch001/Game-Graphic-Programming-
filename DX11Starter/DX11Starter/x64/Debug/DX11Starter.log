@@ -1,7 +1,13 @@
-﻿  Camera.cpp
+﻿  compilation object save succeeded; see Z:\IGMProfile\Desktop\GGP\DX11Starter\x64\Debug\VertexShader.cso
+  Camera.cpp
+  DXCore.cpp
   Game.cpp
-e:\learning\weihaoyan\gamegraphicprogramming\game-graphic-programming-\dx11starter\dx11starter\game.cpp(401): warning C4244: “初始化”: 从“LONG”转换到“float”，可能丢失数据
-e:\learning\weihaoyan\gamegraphicprogramming\game-graphic-programming-\dx11starter\dx11starter\game.cpp(402): warning C4244: “初始化”: 从“LONG”转换到“float”，可能丢失数据
+z:\igmprofile\desktop\ggp\dx11starter\dx11starter\game.cpp(405): warning C4244: 'initializing': conversion from 'LONG' to 'float', possible loss of data
+z:\igmprofile\desktop\ggp\dx11starter\dx11starter\game.cpp(406): warning C4244: 'initializing': conversion from 'LONG' to 'float', possible loss of data
+  GameEntity.cpp
   Main.cpp
-  正在生成代码...
-  DX11Starter.vcxproj -> E:\learning\WeihaoYan\GameGraphicProgramming\Game-Graphic-Programming-\DX11Starter\x64\Debug\DX11Starter.exe
+  Material.cpp
+  Mesh.cpp
+  SimpleShader.cpp
+  Generating Code...
+  DX11Starter.vcxproj -> Z:\IGMProfile\Desktop\GGP\DX11Starter\x64\Debug\DX11Starter.exe
