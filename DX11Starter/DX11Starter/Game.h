@@ -34,6 +34,7 @@ private:
 	Mesh* geometry1;
 	Mesh* geometry2;
 	Mesh* geometry3;
+	Mesh* testCube;
 
 	//Five new gameentities
 	GameEntity* entity1;
@@ -41,6 +42,7 @@ private:
 	GameEntity* entity3;
 	GameEntity* entity4;
 	GameEntity* entity5;
+	GameEntity* testEntity;
 
 
 	// Initialization helper methods - feel free to customize, combine, etc.

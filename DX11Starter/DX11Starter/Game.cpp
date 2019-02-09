@@ -55,6 +55,7 @@ Game::~Game()
 	delete geometry1;
 	delete geometry2;
 	delete geometry3;
+	delete testCube;
 	
 	//Delete GameEntity objects 
 	delete entity1;
@@ -62,6 +63,7 @@ Game::~Game()
 	delete entity3;
 	delete entity4;
 	delete entity5;
+	delete testEntity;
 
 	//Delete Camera
 	delete cameraObj;
@@ -210,14 +212,15 @@ void Game::CreateBasicGeometry()
 	// - Indices are technically not required if the vertices are in the buffer 
 	//    in the correct order and each one will be used exactly once
 	// - But just to see how it's done...
-	int indices1[] = { 0, 1, 4, 0, 4, 2, 0, 3, 1, 0, 2, 3, 1, 2, 4, 2, 1, 3 };
-	int indices2[] = { 0, 2, 4, 0, 4, 1, 2, 1, 4, 2, 3, 1, 0, 3, 2, 0, 1, 3 };
-	int indices3[] = { 0, 2, 1, 1, 2, 3, 2, 5, 3, 2, 4, 5, 4, 7, 5, 4, 6, 7, 0, 1, 7, 0, 7, 6, 0, 6, 2, 2, 6, 4, 1, 3, 7, 3, 5, 7};
+	unsigned int indices1[] = { 0, 1, 4, 0, 4, 2, 0, 3, 1, 0, 2, 3, 1, 2, 4, 2, 1, 3 };
+	unsigned int indices2[] = { 0, 2, 4, 0, 4, 1, 2, 1, 4, 2, 3, 1, 0, 3, 2, 0, 1, 3 };
+	unsigned int indices3[] = { 0, 2, 1, 1, 2, 3, 2, 5, 3, 2, 4, 5, 4, 7, 5, 4, 6, 7, 0, 1, 7, 0, 7, 6, 0, 6, 2, 2, 6, 4, 1, 3, 7, 3, 5, 7};
 
 	// Create Mesh object and pass the array of vertices and indices.
 	geometry1 = new Mesh(vertices1, 5, indices1, 18, device);
 	geometry2 = new Mesh(vertices2, 5, indices2, 18, device);
 	geometry3 = new Mesh(vertices3, 8, indices3, 36, device);
+	testCube = new Mesh("..\\..\\OBJ_Files\\cone.obj", device);
 	
 	//Create GameEntity objects and accept pointer of Mesh
 	entity1 = new GameEntity(geometry1, material);
@@ -225,6 +228,7 @@ void Game::CreateBasicGeometry()
 	entity3 = new GameEntity(geometry3, material);
 	entity4 = new GameEntity(geometry3, material);
 	entity5 = new GameEntity(geometry3, material);
+	testEntity = new GameEntity(testCube, material);
 }
 
 
@@ -321,6 +325,7 @@ void Game::Draw(float deltaTime, float totalTime)
 	Shader(entity3);
 	Shader(entity4);
 	Shader(entity5);
+	Shader(testEntity);
 
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it

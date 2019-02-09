@@ -8,11 +8,11 @@
 class Mesh
 {
 public:
-	Mesh(Vertex* vertices, int numVertices,  int* indices, int numIndices, ID3D11Device* device);
-	Mesh(char* fileName);
+	Mesh(Vertex* vertices, int numVertices, unsigned int* indices, int numIndices, ID3D11Device* device);
+	Mesh(char* fileName, ID3D11Device* device);
 	~Mesh();
 
-
+	void createVertex_IndexBuffer(Vertex * vertices, int numVertices, unsigned int * indices, int numIndices1, ID3D11Device* device);
 
 	//returns the pointer to the vertex buffer object
 	ID3D11Buffer* GetVertexBuffer();
