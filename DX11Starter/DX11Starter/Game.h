@@ -1,12 +1,9 @@
 #pragma once
 
 #include "DXCore.h"
-#include "SimpleShader.h"
-#include <DirectXMath.h>
-#include "Mesh.h"
-#include "Vertex.h"
 #include "GameEntity.h"
 #include "Camera.h"
+#include "Lights.h"
 
 class Game 
 	: public DXCore
@@ -73,5 +70,9 @@ private:
 	//The pointer of Material
 	Material* material;
 	
+	//The DirectionalLight
+	DirectionalLight light1;
+	DirectionalLight light2;
+
 };
 
