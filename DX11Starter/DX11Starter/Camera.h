@@ -17,6 +17,7 @@ public:
 	void cameraMovement(float detlaTime);
 	DirectX::XMFLOAT4X4 getView();
 	DirectX::XMFLOAT4X4 getProjection();
+	DirectX::XMFLOAT3 getPosition();
 	void setProjection(float width, float height, float fov);
 	void setRotationX(float x);
 	void setRotationY(float y);

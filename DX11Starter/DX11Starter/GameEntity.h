@@ -25,8 +25,8 @@ public:
 	void MoveForward(float x, float y, float z);
 	//Movement Methods
 
-	//Material
-	void prepareMaterial(DirectX::XMFLOAT4X4 viewMatrix, DirectX::XMFLOAT4X4 projectionMatrix);
+	//Material pass the view, projection and cameraPosition to the Shader
+	void prepareMaterial(DirectX::XMFLOAT4X4 viewMatrix, DirectX::XMFLOAT4X4 projectionMatrix, DirectX::XMFLOAT3 cameraPosition);
 
 private:
 	//the translation, rotation and scale of this entity

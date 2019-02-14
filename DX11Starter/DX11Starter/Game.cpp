@@ -52,10 +52,12 @@ Game::~Game()
 	delete pixelShader;
 
 	//delete Mesh objects and clean up the DirectX objects
-	delete geometry1;
-	delete geometry2;
-	delete geometry3;
-	delete testCube;
+	delete sphere;
+	delete torus;
+	delete helix;
+	delete cube;
+	delete cone;
+	delete cylinder;
 	
 	//Delete GameEntity objects 
 	delete entity1;
@@ -63,7 +65,7 @@ Game::~Game()
 	delete entity3;
 	delete entity4;
 	delete entity5;
-	delete testEntity;
+	delete entity6;
 
 	//Delete Camera
 	delete cameraObj;
@@ -80,13 +82,16 @@ void Game::Init()
 {
 	
 	light1.AmbientColor = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
-	light1.DiffuseColor = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
+	light1.DiffuseColor = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 	light1.Direction = XMFLOAT3(1.0f, -1.0f, 0.0f);
 
 	light2.AmbientColor = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
 	light2.DiffuseColor = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 	light2.Direction = XMFLOAT3(-1.0f, 1.0f, 0.0f);
 	
+	light3.position = XMFLOAT3(0.0f, 5.0f, 0.0f);
+	light3.color = XMFLOAT3(0.0f, 0.0f, 1.0f);
+
 	// Helper methods for loading shaders, creating some basic
 	// geometry to draw and some simple camera matrices.
 	//  - You'll be expanding and/or replacing these later
@@ -127,6 +132,10 @@ void Game::LoadShaders()
 		&light2,                     // The address of the data to copy
 		sizeof(DirectionalLight));   // The size of the data to copy
 
+	pixelShader->SetData(
+		"light3",
+		&light3,
+		sizeof(PointLight));
 }
 
 
@@ -240,18 +249,20 @@ void Game::CreateBasicGeometry()
 	/*geometry1 = new Mesh(vertices1, 5, indices1, 18, device);
 	geometry2 = new Mesh(vertices2, 5, indices2, 18, device);
 	geometry3 = new Mesh(vertices3, 8, indices3, 36, device);*/
-	geometry1 = new Mesh("..\\..\\OBJ_Files\\cube.obj", device);
-	geometry2 = new Mesh("..\\..\\OBJ_Files\\cube.obj", device);
-	geometry3 = new Mesh("..\\..\\OBJ_Files\\cube.obj", device);
-	testCube = new Mesh("..\\..\\OBJ_Files\\cube.obj", device);
+	sphere = new Mesh("..\\..\\OBJ_Files\\sphere.obj", device);
+	torus = new Mesh("..\\..\\OBJ_Files\\torus.obj", device);
+	helix = new Mesh("..\\..\\OBJ_Files\\helix.obj", device);
+	cube = new Mesh("..\\..\\OBJ_Files\\cube.obj", device);
+	cone = new Mesh("..\\..\\OBJ_Files\\cone.obj", device);
+	cylinder = new Mesh("..\\..\\OBJ_Files\\cylinder.obj", device);
 	
 	//Create GameEntity objects and accept pointer of Mesh
-	entity1 = new GameEntity(geometry1, material);
-	entity2 = new GameEntity(geometry2, material);
-	entity3 = new GameEntity(geometry3, material);
-	entity4 = new GameEntity(geometry3, material);
-	entity5 = new GameEntity(geometry3, material);
-	testEntity = new GameEntity(testCube, material);
+	entity1 = new GameEntity(sphere, material);
+	entity2 = new GameEntity(torus, material);
+	entity3 = new GameEntity(helix, material);
+	entity4 = new GameEntity(cube, material);
+	entity5 = new GameEntity(cone, material);
+	entity6 = new GameEntity(cylinder, material);
 }
 
 
@@ -284,38 +295,44 @@ void Game::Update(float deltaTime, float totalTime)
 	if (GetAsyncKeyState(VK_ESCAPE))
 		Quit();
 
-	float sinTime = sin(totalTime )*2;
-	float cosTime = cos(totalTime * 10);
+	float sinTime = sin(totalTime * 0.5f)*2;
+	float cosTime = cos(totalTime * 0.5f)*2;
 
 	//Set entity1 worldTransformation
-	entity1->SetTranslation(0.0f, sinTime, 0.0f);
-	entity1->SetRotation(0.0f, totalTime, 0.0f);
-	entity1->SetScale(sinTime, sinTime, sinTime);
+	entity1->SetTranslation(sinTime, sinTime, sinTime);
+	entity1->SetRotation(totalTime, totalTime, totalTime);
+	//entity1->SetScale(sinTime, sinTime, sinTime);
 	entity1->SetWorldMatrix();
 	
 	//Set entity2 worldTransformation
-	entity2->SetTranslation(0.0f, sinTime, 0.0f);
-	entity2->SetRotation(0.0f, totalTime, 0.0f );
-	entity2->SetScale(sinTime, sinTime, sinTime);
+	entity2->SetTranslation(-sinTime, -sinTime, -sinTime);
+	entity2->SetRotation(totalTime, totalTime, totalTime);
+	//entity2->SetScale(sinTime, sinTime, sinTime);
 	entity2->SetWorldMatrix();
 
 	//Set entity3 worldTransformation
-	entity3->SetTranslation(-2.0f, 0.0f, 0.0f);
-	entity3->SetRotation(0.0f, -totalTime, 0.0f);
-	entity3->SetScale(sinTime, sinTime, sinTime);
+	entity3->SetTranslation(cosTime, cosTime, cosTime);
+	entity3->SetRotation(totalTime, totalTime, totalTime);
+	//entity3->SetScale(sinTime, sinTime, sinTime);
 	entity3->SetWorldMatrix();
 
 	//Set entity4 worldTransformation
-	entity4->SetTranslation(+2.0f, 0.0f, 0.0f);
-	entity4->SetRotation(0.0f, totalTime, 0.0f);
-	entity4->SetScale(sinTime, sinTime, sinTime);
+	entity4->SetTranslation(-cosTime, -cosTime, -cosTime);
+	entity4->SetRotation(totalTime, totalTime, totalTime);
+	//entity4->SetScale(sinTime, sinTime, sinTime);
 	entity4->SetWorldMatrix();
 
 	//Set entity5 worldTransformation
-	entity5->SetTranslation(0.0f, 0.0f, 0.0f);
-	entity5->SetRotation(0.0f, totalTime, 0.0f);
-	entity5->SetScale(sinTime, sinTime, sinTime);
+	entity5->SetTranslation(sinTime, cosTime, sinTime);
+	entity5->SetRotation(totalTime, totalTime, totalTime);
+	//entity5->SetScale(sinTime, sinTime, sinTime);
 	entity5->SetWorldMatrix();
+
+	//Set entity6 worldTransformation
+	entity6->SetTranslation(-sinTime, -cosTime, -sinTime);
+	entity6->SetRotation(totalTime, totalTime, totalTime);
+	//entity6->SetScale(sinTime, sinTime, sinTime);
+	entity6->SetWorldMatrix();
 
 	//Update Camera
 	cameraObj->Update(deltaTime);
@@ -348,7 +365,7 @@ void Game::Draw(float deltaTime, float totalTime)
 	Shader(entity3);
 	Shader(entity4);
 	Shader(entity5);
-	//Shader(testEntity);
+	Shader(entity6);
 
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it
@@ -362,7 +379,7 @@ void Game::Shader(GameEntity* entity)
 	//Send data to shader variables
 	//CopyAllBufferData 
 	//Set the bertex and pixel shader to use for next Draw()
-	entity->prepareMaterial(cameraObj->getView(), cameraObj->getProjection());
+	entity->prepareMaterial(cameraObj->getView(), cameraObj->getProjection(), cameraObj->getPosition());
 
 	// Set buffers in the input assembler
 	//  - Do this ONCE PER OBJECT you're drawing, since each object might

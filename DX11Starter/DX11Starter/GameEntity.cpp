@@ -109,7 +109,7 @@ void GameEntity::MoveForward(float x, float y, float z)
 {
 }
 
-void GameEntity::prepareMaterial(DirectX::XMFLOAT4X4 viewMatrix, DirectX::XMFLOAT4X4 projectionMatrix)
+void GameEntity::prepareMaterial(DirectX::XMFLOAT4X4 viewMatrix, DirectX::XMFLOAT4X4 projectionMatrix, DirectX::XMFLOAT3 cameraPosition)
 {
 	// Send data to shader variables
 	//  - Do this ONCE PER OBJECT you're drawing
@@ -119,6 +119,8 @@ void GameEntity::prepareMaterial(DirectX::XMFLOAT4X4 viewMatrix, DirectX::XMFLOA
 	material->getVertexShader()->SetMatrix4x4("world", worldMatrix);
 	material->getVertexShader()->SetMatrix4x4("view", viewMatrix);
 	material->getVertexShader()->SetMatrix4x4("projection", projectionMatrix);
+
+	material->getPixelShader()->SetFloat3("CameraPosition", cameraPosition);
 
 	// Once you've set all of the data you care to change for
 	// the next draw call, you need to actually send it to the GPU

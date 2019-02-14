@@ -28,10 +28,12 @@ public:
 	void OnMouseWheel(float wheelDelta,   int x, int y);
 private:
 	//three new Mesh class
-	Mesh* geometry1;
-	Mesh* geometry2;
-	Mesh* geometry3;
-	Mesh* testCube;
+	Mesh* sphere;
+	Mesh* torus;
+	Mesh* helix;
+	Mesh* cube;
+	Mesh* cone;
+	Mesh* cylinder;
 
 	//Five new gameentities
 	GameEntity* entity1;
@@ -39,7 +41,7 @@ private:
 	GameEntity* entity3;
 	GameEntity* entity4;
 	GameEntity* entity5;
-	GameEntity* testEntity;
+	GameEntity* entity6;
 
 
 	// Initialization helper methods - feel free to customize, combine, etc.
@@ -74,5 +76,7 @@ private:
 	DirectionalLight light1;
 	DirectionalLight light2;
 
+	//The PointLight
+	PointLight light3;
 };
 

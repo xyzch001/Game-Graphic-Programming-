@@ -18,7 +18,7 @@ Camera::Camera(float screenWidth, float screenHeight)
 		0.0f, 0.0f, 0.0f, 1.0f,
 	};
 
-	cameraPosition = XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f);;
+	cameraPosition = XMVectorSet(0.0f, 0.0f, -9.0f, 0.0f);;
 	cameraDirection = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	cameraUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	aroundX = 0.0f;
@@ -79,6 +79,13 @@ DirectX::XMFLOAT4X4 Camera::getView()
 DirectX::XMFLOAT4X4 Camera::getProjection()
 {
 	return projection;
+}
+
+DirectX::XMFLOAT3 Camera::getPosition()
+{
+	XMFLOAT3 position = XMFLOAT3(0.0f, 0.0f, -9.0f);
+	XMStoreFloat3(&position, cameraPosition);
+	return position;
 }
 
 void Camera::setProjection(float width, float height, float fov)

@@ -13,6 +13,7 @@ struct VertexToPixel
 	//  v    v                v
 	float4 position		: SV_POSITION;
 	float3 normal       : NORMAL;       // Normal of the vertex
+	float3 worldPos     : POSITION;
 	//float4 color		: COLOR;
 };
 
@@ -28,10 +29,24 @@ struct DirectionalLight
 	float3 Direction;
 };
 
+struct PointLight
+{
+	// Data type
+	//   |
+	//   |     Name
+	//   |      |
+	//   v      v
+	float3 Position;
+	float  junk;
+	float3 Color;
+};
+
 cbuffer externalData : register(b0)
 {
 	DirectionalLight light1;
 	DirectionalLight light2;
+	PointLight light3;
+	float3 CameraPosition;
 };
 
 // --------------------------------------------------------
@@ -49,18 +64,40 @@ float4 main(VertexToPixel input) : SV_TARGET
 	// - This color (like most values passing through the rasterizer) is 
 	//   interpolated for each pixel between the corresponding vertices 
 	//   of the triangle we're rendering
+	float shininess = 32.0f; // Arbitraty surface shininess vaule
+    float3 dirToCamera = normalize(CameraPosition - input.worldPos);
+
+	//------------DirectionalLight--------------
 	float4 result = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	input.normal = normalize(input.normal);
     float3 resultDirection = float3(0.0f, 0.0f, 0.0f);
 	resultDirection = normalize(-light1.Direction);
 	float lightAmount = dot(input.normal, resultDirection);
-	saturate(lightAmount);
+	lightAmount = saturate(lightAmount);
+
+	
+
 	result += light1.DiffuseColor * lightAmount + light1.AmbientColor;
 
 	resultDirection = normalize(-light2.Direction);
 	lightAmount = dot(input.normal, resultDirection);
-	saturate(lightAmount);
+	lightAmount = saturate(lightAmount);
+
+	
+
 	result += light2.DiffuseColor * lightAmount + light2.AmbientColor;
 
-	return float4(result);
+	//  ------------------POINT LIGHT-------------------------
+	float3 dirToPointLight = normalize(light3.Position - input.worldPos);
+	lightAmount = dot(input.normal, dirToPointLight);
+	lightAmount = saturate(lightAmount);
+	
+	// Specular calculation for reflections (Phong)
+	float3 pointRefl = reflect(-dirToPointLight, input.normal);
+	float3 pointSpec = pow(saturate(dot(pointRefl, dirToCamera)), shininess);
+
+	//Conmbine the surface and lighting
+	//result += light3.Color * lightAmount + pointSpec.rrr;
+
+	return result + float4(float3(1.0f,1.0f,1.0f) * light3.Color * lightAmount + pointSpec.rrr , 1.0f);
 }
