@@ -72,7 +72,7 @@ void GameEntity::SetWorldMatrix()
 	DirectX::XMMATRIX objTranslation = DirectX::XMLoadFloat4x4(&translation);
 	DirectX::XMMATRIX objRotation    = DirectX::XMLoadFloat4x4(&rotation);
 	DirectX::XMMATRIX objScale       = DirectX::XMLoadFloat4x4(&scale);
-	DirectX::XMMATRIX objWorldMatrix = objScale * objRotation * objTranslation* objRotation;
+	DirectX::XMMATRIX objWorldMatrix = objScale * objRotation * objTranslation * objRotation;
 	DirectX::XMStoreFloat4x4(&worldMatrix, DirectX::XMMatrixTranspose(objWorldMatrix));
 }
 
@@ -124,7 +124,7 @@ void GameEntity::prepareMaterial(DirectX::XMFLOAT4X4 viewMatrix, DirectX::XMFLOA
 	// the next draw call, you need to actually send it to the GPU
 	//  - If you skip this, the "SetMatrix" calls above won't make it to the GPU!
 	material->getVertexShader()->CopyAllBufferData();
-
+	material->getPixelShader()->CopyAllBufferData();
 	// Set the vertex and pixel shaders to use for the next Draw() command
 	//  - These don't technically need to be set every frame...YET
 	//  - Once you start applying different shaders to different objects,

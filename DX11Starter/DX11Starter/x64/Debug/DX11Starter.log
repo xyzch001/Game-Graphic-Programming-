@@ -1,5 +1,6 @@
-﻿  Game.cpp
-e:\learning\weihaoyan\gamegraphicprogramming\game-graphic-programming-\dx11starter\dx11starter\mesh.h(6): warning C4067: 预处理器指令后有意外标记 - 应输入换行符
-e:\learning\weihaoyan\gamegraphicprogramming\game-graphic-programming-\dx11starter\dx11starter\game.cpp(410): warning C4244: “初始化”: 从“LONG”转换到“float”，可能丢失数据
-e:\learning\weihaoyan\gamegraphicprogramming\game-graphic-programming-\dx11starter\dx11starter\game.cpp(411): warning C4244: “初始化”: 从“LONG”转换到“float”，可能丢失数据
-  DX11Starter.vcxproj -> E:\learning\WeihaoYan\GameGraphicProgramming\Game-Graphic-Programming-\DX11Starter\x64\Debug\DX11Starter.exe
+﻿  compilation object save succeeded; see Z:\IGMProfile\Desktop\GGP\DX11Starter\x64\Debug\PixelShader.cso
+  Game.cpp
+z:\igmprofile\desktop\ggp\dx11starter\dx11starter\mesh.h(6): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+z:\igmprofile\desktop\ggp\dx11starter\dx11starter\game.cpp(433): warning C4244: 'initializing': conversion from 'LONG' to 'float', possible loss of data
+z:\igmprofile\desktop\ggp\dx11starter\dx11starter\game.cpp(434): warning C4244: 'initializing': conversion from 'LONG' to 'float', possible loss of data
+  DX11Starter.vcxproj -> Z:\IGMProfile\Desktop\GGP\DX11Starter\x64\Debug\DX11Starter.exe
