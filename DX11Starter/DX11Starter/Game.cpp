@@ -44,9 +44,11 @@ Game::~Game()
 {
 	//// Release any (and all!) DirectX objects
 	//// we've made in the Game class
-	/*if (vertexBuffer) { vertexBuffer->Release(); }
-	if (indexBuffer) { indexBuffer->Release(); }*/
-
+	//if (vertexBuffer) { vertexBuffer->Release(); }
+	//if (indexBuffer) { indexBuffer->Release(); }
+	if (srv) { srv->Release(); }
+	if (sampleState) { sampleState->Release(); }
+	
 	// Delete our simple shader objects, which
 	// will clean up their own internal DirectX stuff
 	delete vertexShader;
@@ -73,6 +75,8 @@ Game::~Game()
 
 	//Delete Material
 	delete material;
+
+	
 }
 
 // --------------------------------------------------------
@@ -458,8 +462,8 @@ void Game::OnMouseUp(WPARAM buttonState, int x, int y)
 void Game::OnMouseMove(WPARAM buttonState, int x, int y)
 {
 	// Add any custom code here...
-	float deltaX = x - prevMousePos.x;
-	float deltaY = y - prevMousePos.y;
+	float deltaX = float(x - prevMousePos.x);
+	float deltaY = float(y - prevMousePos.y);
 	if (buttonState & 0x0001) {
 		cameraObj->setRotationX(deltaX);
 		cameraObj->setRotationY(deltaY);

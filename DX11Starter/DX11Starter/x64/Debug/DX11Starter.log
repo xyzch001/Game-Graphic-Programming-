@@ -1,5 +1,4 @@
 ﻿  Game.cpp
-e:\learning\weihaoyan\gamegraphicprogramming\game-graphic-programming-\dx11starter\dx11starter\mesh.h(6): warning C4067: 预处理器指令后有意外标记 - 应输入换行符
-e:\learning\weihaoyan\gamegraphicprogramming\game-graphic-programming-\dx11starter\dx11starter\game.cpp(461): warning C4244: “初始化”: 从“LONG”转换到“float”，可能丢失数据
-e:\learning\weihaoyan\gamegraphicprogramming\game-graphic-programming-\dx11starter\dx11starter\game.cpp(462): warning C4244: “初始化”: 从“LONG”转换到“float”，可能丢失数据
+  Mesh.cpp
+  正在生成代码...
   DX11Starter.vcxproj -> E:\learning\WeihaoYan\GameGraphicProgramming\Game-Graphic-Programming-\DX11Starter\x64\Debug\DX11Starter.exe
