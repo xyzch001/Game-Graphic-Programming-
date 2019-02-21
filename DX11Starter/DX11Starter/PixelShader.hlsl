@@ -14,6 +14,7 @@ struct VertexToPixel
 	float4 position		: SV_POSITION;
 	float3 normal       : NORMAL;       // Normal of the vertex
 	float3 worldPos     : POSITION;
+	float2 uv           : TEXCOORD;      // UV for the textures coordinate
 	//float4 color		: COLOR;
 };
 
@@ -49,6 +50,10 @@ cbuffer externalData : register(b0)
 	float3 CameraPosition;
 };
 
+// Global variables for the texture and sampler
+Texture2D diffuseTexture : register(t0);
+SamplerState basicSampler : register(s0);
+
 // --------------------------------------------------------
 // The entry point (main method) for our pixel shader
 // 
@@ -64,6 +69,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	// - This color (like most values passing through the rasterizer) is 
 	//   interpolated for each pixel between the corresponding vertices 
 	//   of the triangle we're rendering
+	float4 surfaceColor = diffuseTexture.Sample(basicSampler, input.uv);
 	float shininess = 32.0f; // Arbitraty surface shininess vaule
     float3 dirToCamera = normalize(CameraPosition - input.worldPos);
 
@@ -99,5 +105,5 @@ float4 main(VertexToPixel input) : SV_TARGET
 	//Conmbine the surface and lighting
 	//result += light3.Color * lightAmount + pointSpec.rrr;
 
-	return result + float4(float3(1.0f,1.0f,1.0f) * light3.Color * lightAmount + pointSpec.rrr , 1.0f);
+	return surfaceColor * (result + float4(light3.Color * lightAmount + pointSpec.rrr , 1.0f));
 }

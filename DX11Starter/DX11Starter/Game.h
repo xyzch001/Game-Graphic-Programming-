@@ -78,5 +78,11 @@ private:
 
 	//The PointLight
 	PointLight light3;
+
+	// Texture SRV pointer
+	ID3D11ShaderResourceView* srv;
+
+	ID3D11SamplerState* sampleState;
+	D3D11_SAMPLER_DESC sampleDesc = {};
 };
 

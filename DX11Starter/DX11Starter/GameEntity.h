@@ -26,7 +26,7 @@ public:
 	//Movement Methods
 
 	//Material pass the view, projection and cameraPosition to the Shader
-	void prepareMaterial(DirectX::XMFLOAT4X4 viewMatrix, DirectX::XMFLOAT4X4 projectionMatrix, DirectX::XMFLOAT3 cameraPosition);
+	void prepareMaterial(DirectX::XMFLOAT4X4 viewMatrix, DirectX::XMFLOAT4X4 projectionMatrix, DirectX::XMFLOAT3 cameraPosition, ID3D11ShaderResourceView* srv, ID3D11SamplerState* samplerState);
 
 private:
 	//the translation, rotation and scale of this entity

@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Vertex.h"
+#include "WICTextureLoader.h"
 
 // For the DirectX Math library
 using namespace DirectX;
@@ -80,13 +81,23 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
+	CreateWICTextureFromFile(device, context, L"..\\..\\Textures\\TexturesCom_Cliffs0464_7_seamless_S.jpg", 0, &srv);
+	sampleDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampleDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampleDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampleDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	sampleDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	
+	
+
+	device->CreateSamplerState(&sampleDesc, &sampleState);
+
 	light1.AmbientColor = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
-	light1.DiffuseColor = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
+	light1.DiffuseColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	light1.Direction = XMFLOAT3(1.0f, -1.0f, 0.0f);
 
 	light2.AmbientColor = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
-	light2.DiffuseColor = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
+	light2.DiffuseColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 	light2.Direction = XMFLOAT3(-1.0f, 1.0f, 0.0f);
 	
 	light3.position = XMFLOAT3(0.0f, 5.0f, 0.0f);
@@ -121,7 +132,7 @@ void Game::LoadShaders()
 
 	
 
-	material = new Material(vertexShader, pixelShader);
+	material = new Material(vertexShader, pixelShader, srv, sampleState);
 	pixelShader->SetData(
 		"light1",                    // The name of the (eventual) variable in the shader
 		&light1,                     // The address of the data to copy
@@ -379,7 +390,7 @@ void Game::Shader(GameEntity* entity)
 	//Send data to shader variables
 	//CopyAllBufferData 
 	//Set the bertex and pixel shader to use for next Draw()
-	entity->prepareMaterial(cameraObj->getView(), cameraObj->getProjection(), cameraObj->getPosition());
+	entity->prepareMaterial(cameraObj->getView(), cameraObj->getProjection(), cameraObj->getPosition(), material->getSRV(), material->getSamplerState());
 
 	// Set buffers in the input assembler
 	//  - Do this ONCE PER OBJECT you're drawing, since each object might
