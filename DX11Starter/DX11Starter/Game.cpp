@@ -49,7 +49,7 @@ Game::~Game()
 	if (srv) { srv->Release(); }
 	if (srv1) { srv1->Release(); }
 	if (sampleState) { sampleState->Release(); }
-	if (sampleState1) { sampleState->Release(); }
+	
 	
 	// Delete our simple shader objects, which
 	// will clean up their own internal DirectX stuff
@@ -87,7 +87,8 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-	CreateWICTextureFromFile(device, context, L"..\\..\\Textures\\TexturesCom_BarkDecidious0194_1_seamless_S.jpg", 0, &srv1);
+	CreateWICTextureFromFile(device, context, L"..\\..\\Textures\\TexturesCom_Cliffs0464_7_seamless_S.jpg", 0, &srv);
+	CreateWICTextureFromFile(device, context, L"..\\..\\Textures\\TexturesCom_MetalBare0146_4_M.jpg", 0, &srv1);
 	sampleDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampleDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampleDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -99,30 +100,22 @@ void Game::Init()
 	device->CreateSamplerState(&sampleDesc, &sampleState);
 
 
-	CreateWICTextureFromFile(device, context, L"..\\..\\Textures\\TexturesCom_MetalBare0146_4_M.jpg", 0, &srv);
-	sampleDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampleDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampleDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampleDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	sampleDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-
-
-	device->CreateSamplerState(&sampleDesc, &sampleState1);
+	
+	
 
 	//---------------------------------------------------
 
 
 	light1.AmbientColor = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
 	light1.DiffuseColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	light1.Direction = XMFLOAT3(1.0f, -1.0f, 0.0f);
+	light1.Direction = XMFLOAT3(1.0f, 0.0f, 0.0f);
 
 	light2.AmbientColor = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
-	light2.DiffuseColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	light2.Direction = XMFLOAT3(-1.0f, 1.0f, 0.0f);
+	light2.DiffuseColor = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	light2.Direction = XMFLOAT3(-1.0f, 0.0f, 0.0f);
 	
 	light3.position = XMFLOAT3(0.0f, 5.0f, 0.0f);
-	light3.color = XMFLOAT3(1.0f, 1.0f, 1.0f);
+	light3.color = XMFLOAT3(0.0f, 0.0f, 1.0f);
 
 	// Helper methods for loading shaders, creating some basic
 	// geometry to draw and some simple camera matrices.
@@ -154,7 +147,7 @@ void Game::LoadShaders()
 	
 
 	material = new Material(vertexShader, pixelShader, srv, sampleState);
-	metal = new Material(vertexShader, pixelShader, srv1, sampleState1);
+	metal = new Material(vertexShader, pixelShader, srv1, sampleState);
 	pixelShader->SetData(
 		"light1",                    // The name of the (eventual) variable in the shader
 		&light1,                     // The address of the data to copy
@@ -380,8 +373,8 @@ void Game::Update(float deltaTime, float totalTime)
 void Game::Draw(float deltaTime, float totalTime)
 {
 	// Background color (Cornflower Blue in this case) for clearing
-	//const float color[4] = { 0.4f, 0.6f, 0.75f, 0.0f };
-	const float color[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	const float color[4] = { 0.4f, 0.6f, 0.75f, 0.0f };
+	//const float color[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	// Clear the render target and depth buffer (erases what's on the screen)
 	//  - Do this ONCE PER FRAME
 	//  - At the beginning of Draw (before drawing *anything*)

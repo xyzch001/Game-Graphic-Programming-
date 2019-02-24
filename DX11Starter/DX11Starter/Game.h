@@ -85,7 +85,7 @@ private:
 	ID3D11ShaderResourceView* srv1;
 
 	ID3D11SamplerState* sampleState;
-	ID3D11SamplerState* sampleState1;
+	
 	D3D11_SAMPLER_DESC sampleDesc = {};
 };
 
