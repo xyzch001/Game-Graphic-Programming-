@@ -1,4 +1,5 @@
 ﻿  Game.cpp
-  Mesh.cpp
+  GameEntity.cpp
+  Main.cpp
   正在生成代码...
   DX11Starter.vcxproj -> E:\learning\WeihaoYan\GameGraphicProgramming\Game-Graphic-Programming-\DX11Starter\x64\Debug\DX11Starter.exe

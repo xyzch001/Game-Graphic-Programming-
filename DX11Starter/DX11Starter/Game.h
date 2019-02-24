@@ -71,6 +71,7 @@ private:
 
 	//The pointer of Material
 	Material* material;
+	Material* metal;
 	
 	//The DirectionalLight
 	DirectionalLight light1;
@@ -81,8 +82,10 @@ private:
 
 	// Texture SRV pointer
 	ID3D11ShaderResourceView* srv;
+	ID3D11ShaderResourceView* srv1;
 
 	ID3D11SamplerState* sampleState;
+	ID3D11SamplerState* sampleState1;
 	D3D11_SAMPLER_DESC sampleDesc = {};
 };
 
