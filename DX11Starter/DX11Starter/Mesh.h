@@ -4,6 +4,7 @@
 #include "Vertex.h"
 #include <d3d11.h>
 #include <fstream>
+#include <DirectXCollision.h>
 
 class Mesh
 {
@@ -23,6 +24,10 @@ public:
 	//return the number of indices this mesh contains
 	int GetIndexCount();
 
+	inline DirectX::BoundingSphere GetSphereCollider() {
+		return collider;
+	}
+
 private:
 	// Buffers to hold actual geometry data
 	ID3D11Buffer* vertexBuffer;
@@ -31,6 +36,8 @@ private:
 	//Specifying how many indices are in the mesh's index buffer
 	int numIndices;
 
+
+	DirectX::BoundingSphere collider;
 
 
 };

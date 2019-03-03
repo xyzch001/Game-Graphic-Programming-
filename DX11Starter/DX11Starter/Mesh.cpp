@@ -165,6 +165,8 @@ Mesh::Mesh(char*  fileName, ID3D11Device* device)
 	// Close the file and create the actual buffers
 	obj.close();
 
+	//Create collider
+	BoundingSphere::CreateFromPoints(collider, vertCounter, &positions[0], 0);
 
 	// - At this point, "verts" is a vector of Vertex structs, and can be used
 	//    directly to create a vertex buffer:  &verts[0] is the address of the first vert

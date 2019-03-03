@@ -117,7 +117,10 @@
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="math3d.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="PhysicsEngine.cpp" />
+    <ClCompile Include="plane.cpp" />
     <ClCompile Include="SimpleShader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -127,7 +130,10 @@
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="Lights.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="math3d.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="PhysicsEngine.h" />
+    <ClInclude Include="plane.h" />
     <ClInclude Include="SimpleShader.h" />
     <ClInclude Include="Vertex.h" />
   </ItemGroup>

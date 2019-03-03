@@ -25,8 +25,20 @@ public:
 	void MoveForward(float x, float y, float z);
 	//Movement Methods
 
+	inline float GetDirection() { return direction; }
+	inline float ChangeDirection() { 
+		direction = -direction;
+		return direction; }
+	inline DirectX::XMMATRIX getWordCollider() {
+		DirectX::XMMATRIX collider = DirectX::XMLoadFloat4x4(&worldMatrix);
+		return collider;
+	}
 	//Material pass the view, projection and cameraPosition to the Shader
 	void prepareMaterial(DirectX::XMFLOAT4X4 viewMatrix, DirectX::XMFLOAT4X4 projectionMatrix, DirectX::XMFLOAT3 cameraPosition);
+
+	inline Mesh* GetMesh() {
+		return gameObj;
+	}
 
 private:
 	//the translation, rotation and scale of this entity
@@ -40,6 +52,8 @@ private:
 
 	//Material object to store the vertex shader and pixel shader
 	Material* material;
+
+	float direction = 1;
 
 };
 

@@ -4,6 +4,11 @@
 #include "GameEntity.h"
 #include "Camera.h"
 #include "Lights.h"
+#include "BoundingSphere.h"
+#include "AABB.h"
+#include "plane.h"
+#include "PhysicsEngine.h"
+#include <iostream>
 
 class Game 
 	: public DXCore
@@ -42,6 +47,8 @@ private:
 	GameEntity* entity4;
 	GameEntity* entity5;
 	GameEntity* entity6;
+
+	
 
 
 	// Initialization helper methods - feel free to customize, combine, etc.
@@ -87,5 +94,7 @@ private:
 	ID3D11SamplerState* sampleState;
 	
 	D3D11_SAMPLER_DESC sampleDesc = {};
+
+	PhysicsEngine* phyEngine;
 };
 

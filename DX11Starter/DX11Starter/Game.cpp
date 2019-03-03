@@ -94,14 +94,59 @@ void Game::Init()
 	sampleDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampleDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	sampleDesc.MaxLOD = D3D11_FLOAT32_MAX;
-	
-	
-
 	device->CreateSamplerState(&sampleDesc, &sampleState);
 
 
+
+	//---------------------Test Physics----------------------
+	/*BoundingSphere sphere1(Vector3f(0.0f, 0.0f, 0.0f), 1.0f);
+	BoundingSphere sphere2(Vector3f(0.0f, 2.0f, 0.0f), 1.0f);
+	BoundingSphere sphere3(Vector3f(0.0f, 0.0f, 3.0f), 1.0f);
+	BoundingSphere sphere4(Vector3f(0.0f, 3.0f, 0.0f), 1.0f);
 	
+	IntersectData sphere1IntersectSphere2 = sphere1.IntersectBoundingSphere(sphere2);
+	IntersectData sphere1IntersectSphere3 = sphere1.IntersectBoundingSphere(sphere3);
+	IntersectData sphere1IntersectSphere4 = sphere1.IntersectBoundingSphere(sphere4);
+
+	std::cout << "Sphere intersect Sphere2: " << sphere1IntersectSphere2.GetDoesIntersect()
+		<< ", Distance: " << sphere1IntersectSphere2.GetDistance() << std::endl;
+	std::cout << "Sphere intersect Sphere3: " << sphere1IntersectSphere3.GetDoesIntersect()
+		<< ", Distance: " << sphere1IntersectSphere3.GetDistance() << std::endl;
+	std::cout << "Sphere intersect Sphere4: " << sphere1IntersectSphere4.GetDoesIntersect()
+		<< ", Distance: " << sphere1IntersectSphere4.GetDistance() << std::endl;
+
+	AABB test(1, 1);
+	test.Test();
+
+	plane testPlane(Vector3f(0.0f, 1.0f, 0.0f), 1.0f);
+	IntersectData planeIntersectSphere1 = testPlane.IntersectSphere(sphere1);
+	IntersectData planeIntersectSphere2 = testPlane.IntersectSphere(sphere2);
+	IntersectData planeIntersectSphere3 = testPlane.IntersectSphere(sphere3);
+	IntersectData planeIntersectSphere4 = testPlane.IntersectSphere(sphere4);
+
+	std::cout << "Plane intersect Sphere1: " << planeIntersectSphere1.GetDoesIntersect()
+		<< ", Distance: " << planeIntersectSphere1.GetDistance() << std::endl;
+	std::cout << "Plane intersect Sphere2: " << planeIntersectSphere2.GetDoesIntersect()
+		<< ", Distance: " << planeIntersectSphere2.GetDistance() << std::endl;
+	std::cout << "Plane intersect Sphere3: " << planeIntersectSphere3.GetDoesIntersect()
+		<< ", Distance: " << planeIntersectSphere3.GetDistance() << std::endl;
+	std::cout << "Plane intersect Sphere4: " << planeIntersectSphere4.GetDoesIntersect()
+		<< ", Distance: " << planeIntersectSphere4.GetDistance() << std::endl;
 	
+	PhysicsObject testObject(Vector3f(0.0f, 1.0f, 0.0f), Vector3f(1.0f, 2.0f, 3.0f));
+	testObject.Integrate(20.0f);
+
+	Vector3f testPos = testObject.GetPosition();
+	Vector3f testVel = testObject.GetVelocity();
+
+	std::cout << "(" << testPos.GetX() << ", " << testPos.GetY() << ", "
+		<< testPos.GetZ() << ")" << std::endl;
+	std::cout << "(" << testVel.GetX() << ", " << testVel.GetY() << ", "
+		<< testVel.GetZ() << ")" << std::endl;
+*/
+	
+	//---------------------Test Physics----------------------
+
 
 	//---------------------------------------------------
 
@@ -129,6 +174,7 @@ void Game::Init()
 	// Essentially: "What kind of shape should the GPU draw with our data?"
 	context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
+
 
 // --------------------------------------------------------
 // Loads shaders from compiled shader object (.cso) files using
@@ -284,11 +330,22 @@ void Game::CreateBasicGeometry()
 	
 	//Create GameEntity objects and accept pointer of Mesh
 	entity1 = new GameEntity(sphere, material);
-	entity2 = new GameEntity(torus, material);
+	entity2 = new GameEntity(sphere, material);
 	entity3 = new GameEntity(helix, material);
 	entity4 = new GameEntity(cube, metal);
 	entity5 = new GameEntity(cone, metal);
 	entity6 = new GameEntity(cylinder, metal);
+
+	phyEngine = new PhysicsEngine();
+	phyEngine->AddEntities(entity1);
+	phyEngine->AddEntities(entity2);
+	entity1->SetTranslation(-2.0f, -2.0f, -2.0f);
+	entity2->SetTranslation(2.0f, 2.0f, 2.0f);
+	entity1->SetWorldMatrix();
+	entity2->SetWorldMatrix();
+	entity2->ChangeDirection();
+	entity1->GetMesh()->GetSphereCollider().Transform(entity1->GetMesh()->GetSphereCollider(), entity1->getWordCollider());
+	entity2->GetMesh()->GetSphereCollider().Transform(entity2->GetMesh()->GetSphereCollider(), entity2->getWordCollider());
 }
 
 
@@ -323,18 +380,22 @@ void Game::Update(float deltaTime, float totalTime)
 
 	float sinTime = sin(totalTime * 0.5f)*2;
 	float cosTime = cos(totalTime * 0.5f)*2;
+	float speed = totalTime * 0.1f;
+
+	phyEngine->Simulate(speed);
+	phyEngine->HandleCollisions();
 
 	//Set entity1 worldTransformation
-	entity1->SetTranslation(sinTime, sinTime, sinTime);
-	entity1->SetRotation(totalTime, totalTime, totalTime);
+	//entity1->SetTranslation(speed, speed, speed);
+	//entity1->SetRotation(totalTime, totalTime, totalTime);
 	//entity1->SetScale(sinTime, sinTime, sinTime);
-	entity1->SetWorldMatrix();
+	//entity1->SetWorldMatrix();
 	
 	//Set entity2 worldTransformation
-	entity2->SetTranslation(-sinTime, -sinTime, -sinTime);
-	entity2->SetRotation(totalTime, totalTime, totalTime);
+	//entity2->SetTranslation(-speed, -speed, -speed);
+	//entity2->SetRotation(totalTime, totalTime, totalTime);
 	//entity2->SetScale(sinTime, sinTime, sinTime);
-	entity2->SetWorldMatrix();
+	//entity2->SetWorldMatrix();
 
 	//Set entity3 worldTransformation
 	entity3->SetTranslation(cosTime, cosTime, cosTime);
@@ -388,10 +449,10 @@ void Game::Draw(float deltaTime, float totalTime)
 	//Shader for the game entities
 	Shader(entity1);
 	Shader(entity2);
-	Shader(entity3);
+	/*Shader(entity3);
 	Shader(entity4);
 	Shader(entity5);
-	Shader(entity6);
+	Shader(entity6);*/
 
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it
