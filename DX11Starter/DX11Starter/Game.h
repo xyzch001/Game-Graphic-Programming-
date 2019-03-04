@@ -10,6 +10,8 @@
 #include "PhysicsEngine.h"
 #include <iostream>
 
+using namespace DirectX;
+
 class Game 
 	: public DXCore
 {

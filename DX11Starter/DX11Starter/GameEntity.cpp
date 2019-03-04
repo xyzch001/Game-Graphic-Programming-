@@ -10,6 +10,9 @@ GameEntity::GameEntity(Mesh* meshObject, Material* materialObj)
 	//accept the pointer of Material object
 	material = materialObj;
 	
+	//aceept the pointer of collider
+	collider = gameObj->GetSphereCollider();
+
 	//Set default vaules for the matrix
 	translation =
 	{

@@ -9,16 +9,21 @@ PhysicsEngine::PhysicsEngine()
 {
 }
 
-void PhysicsEngine::AddEntities(GameEntity * entity)
+void PhysicsEngine::AddEntities(GameEntity* entity)
 {
-	m_entities.push_back(*entity);
+	
+	m_entities.push_back(entity);
+	
 }
 
 void PhysicsEngine::Simulate(float time)
 {
 	for (unsigned int i = 0; i < m_entities.size(); i++) {
-		m_entities[i].SetTranslation(time*m_entities[i].GetDirection(), time*m_entities[i].GetDirection(), time*m_entities[i].GetDirection());
-		m_entities[i].SetWorldMatrix();
+		m_entities[i]->SetTranslation(time * m_entities[i]->GetDirection() + m_entities[i]->GetCollider()->Center.x, time * m_entities[i]->GetDirection() + m_entities[i]->GetCollider()->Center.y, time * m_entities[i]->GetDirection() + m_entities[i]->GetCollider()->Center.z);
+		m_entities[i]->SetWorldMatrix();
+		DirectX::BoundingSphere newSphere;
+		m_entities[i]->GetCollider()->Transform(newSphere, m_entities[i]->getWordCollider());
+		(*m_entities[i]->GetCollider()) = newSphere;
 	}
 }
 
@@ -26,10 +31,10 @@ void PhysicsEngine::HandleCollisions()
 {
 	for (unsigned int i = 0; i < m_entities.size(); i++) {
 				for (unsigned int j = i + 1; j < m_entities.size(); j++) {
-					if (m_entities[i].GetMesh()->GetSphereCollider().Intersects(m_entities[j].GetMesh()->GetSphereCollider())) {
-						m_entities[i].ChangeDirection();
-						m_entities[j].ChangeDirection();
-						std::cout << "collider" << std::endl;
+					if (m_entities[i]->GetCollider()->BoundingSphere::Intersects(*m_entities[j]->GetCollider())) {
+						m_entities[i]->ChangeDirection();
+						m_entities[j]->ChangeDirection();
+						//std::cout << "collider" << std::endl;
 						}
 		
 					

@@ -23,6 +23,7 @@ Mesh::Mesh(char*  fileName, ID3D11Device* device)
 	std::vector<Vertex> verts;           // Verts we're assembling
 	std::vector<UINT> indices;           // Indices of these verts
 	unsigned int vertCounter = 0;        // Count of vertices/indices
+	unsigned int verticesNum = 0;
 	char chars[100];                     // String for line reading
 
 	// Still have data left?
@@ -67,6 +68,7 @@ Mesh::Mesh(char*  fileName, ID3D11Device* device)
 
 			// Add to the positions
 			positions.push_back(pos);
+			verticesNum++;
 		}
 		else if (chars[0] == 'f')
 		{
@@ -166,7 +168,7 @@ Mesh::Mesh(char*  fileName, ID3D11Device* device)
 	obj.close();
 
 	//Create collider
-	BoundingSphere::CreateFromPoints(collider, vertCounter, &positions[0], 0);
+	BoundingSphere::CreateFromPoints(collider, verticesNum, &positions[0], sizeof(XMFLOAT3));
 
 	// - At this point, "verts" is a vector of Vertex structs, and can be used
 	//    directly to create a vertex buffer:  &verts[0] is the address of the first vert

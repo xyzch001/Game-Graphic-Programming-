@@ -3,7 +3,7 @@
 #include "WICTextureLoader.h"
 
 // For the DirectX Math library
-using namespace DirectX;
+
 
 // --------------------------------------------------------
 // Constructor
@@ -78,6 +78,9 @@ Game::~Game()
 	//Delete Material
 	delete material;
 	delete metal;
+
+	//Delete PhysicsEngine
+	delete phyEngine;
 	
 }
 
@@ -339,13 +342,21 @@ void Game::CreateBasicGeometry()
 	phyEngine = new PhysicsEngine();
 	phyEngine->AddEntities(entity1);
 	phyEngine->AddEntities(entity2);
-	entity1->SetTranslation(-2.0f, -2.0f, -2.0f);
+	
+	std::cout << phyEngine->GetNumEntities() << std::endl;
+	phyEngine->GetEntity(0)->SetTranslation(-2.0f, -2.0f, -2.0f);
 	entity2->SetTranslation(2.0f, 2.0f, 2.0f);
-	entity1->SetWorldMatrix();
+	phyEngine->GetEntity(0)->SetWorldMatrix();
 	entity2->SetWorldMatrix();
 	entity2->ChangeDirection();
-	entity1->GetMesh()->GetSphereCollider().Transform(entity1->GetMesh()->GetSphereCollider(), entity1->getWordCollider());
-	entity2->GetMesh()->GetSphereCollider().Transform(entity2->GetMesh()->GetSphereCollider(), entity2->getWordCollider());
+	DirectX::BoundingSphere newSphere;
+    phyEngine->GetEntity(0)->GetCollider()->Transform(newSphere,phyEngine->GetEntity(0)->getWordCollider());
+	(*phyEngine->GetEntity(0)->GetCollider()) = newSphere;
+	phyEngine->GetEntity(1)->GetCollider()->Transform(newSphere, phyEngine->GetEntity(1)->getWordCollider());
+	(*phyEngine->GetEntity(1)->GetCollider()) = newSphere;
+	std::cout << phyEngine->GetEntity(0)->GetCollider()->Center.x << " " << phyEngine->GetEntity(0)->GetCollider()->Center.y << " " << phyEngine->GetEntity(0)->GetCollider()->Center.z << std::endl;
+	std::cout << phyEngine->GetEntity(1)->GetCollider()->Center.x << " " << phyEngine->GetEntity(1)->GetCollider()->Center.y << " " << phyEngine->GetEntity(1)->GetCollider()->Center.z << std::endl;
+	std::cout << phyEngine->GetEntity(0)->GetCollider()->Radius << " " << phyEngine->GetEntity(1)->GetCollider()->Radius << std::endl;
 }
 
 
@@ -380,7 +391,7 @@ void Game::Update(float deltaTime, float totalTime)
 
 	float sinTime = sin(totalTime * 0.5f)*2;
 	float cosTime = cos(totalTime * 0.5f)*2;
-	float speed = totalTime * 0.1f;
+	float speed = totalTime * 0.5f;
 
 	phyEngine->Simulate(speed);
 	phyEngine->HandleCollisions();

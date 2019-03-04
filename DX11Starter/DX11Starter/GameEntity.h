@@ -31,6 +31,7 @@ public:
 		return direction; }
 	inline DirectX::XMMATRIX getWordCollider() {
 		DirectX::XMMATRIX collider = DirectX::XMLoadFloat4x4(&worldMatrix);
+		collider = DirectX::XMMatrixTranspose(collider);
 		return collider;
 	}
 	//Material pass the view, projection and cameraPosition to the Shader
@@ -39,6 +40,8 @@ public:
 	inline Mesh* GetMesh() {
 		return gameObj;
 	}
+
+	inline DirectX::BoundingSphere* GetCollider() { return &collider; }
 
 private:
 	//the translation, rotation and scale of this entity
@@ -54,6 +57,7 @@ private:
 	Material* material;
 
 	float direction = 1;
+	DirectX::BoundingSphere collider;
 
 };
 

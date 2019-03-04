@@ -10,7 +10,7 @@ public:
 	void AddEntities(GameEntity* entity);
 	void Simulate(float time);
 	void HandleCollisions();
-	inline GameEntity& GetEntity(unsigned int index) {
+	inline GameEntity* GetEntity(unsigned int index) {
 		return m_entities[index];
 	}
 	inline unsigned int GetNumEntities() {
@@ -34,6 +34,6 @@ public:
 
 private:
 	//std::vector<PhysicsObject> m_objects;
-	std::vector<GameEntity> m_entities;
+	std::vector<GameEntity*> m_entities;
 };
 
