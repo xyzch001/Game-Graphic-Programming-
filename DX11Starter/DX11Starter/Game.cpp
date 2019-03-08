@@ -63,6 +63,7 @@ Game::~Game()
 	delete cube;
 	delete cone;
 	delete cylinder;
+	delete geometry;
 	
 	//Delete GameEntity objects 
 	delete entity1;
@@ -274,7 +275,7 @@ void Game::CreateBasicGeometry()
 	//XMFLOAT4 blue = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
 
 	XMFLOAT3 normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	XMFLOAT2 uv = XMFLOAT2(0.0f, 0.0f);
+	XMFLOAT2 uv = XMFLOAT2(0.0f, 1.0f);
 
 
 	// Set up the vertices of the triangle we would like to draw
@@ -337,26 +338,42 @@ void Game::CreateBasicGeometry()
 	//Create GameEntity objects and accept pointer of Mesh
 	entity1 = new GameEntity(sphere, material, true);
 	entity2 = new GameEntity(sphere, material, false);
-	entity3 = new GameEntity(helix, material, false);
-	entity4 = new GameEntity(cube, metal, false);
-	entity5 = new GameEntity(cone, metal, false);
-	entity6 = new GameEntity(cylinder, metal, false);
+	entity3 = new GameEntity(geometry, metal, false);
+	entity4 = new GameEntity(sphere, material, false);
+	entity5 = new GameEntity(sphere, material, false);
+	entity6 = new GameEntity(sphere, material, false);
 
 	phyEngine = new PhysicsEngine();
 	phyEngine->AddEntities(entity1);
 	phyEngine->AddEntities(entity2);
+	phyEngine->AddEntities(entity4);
+	phyEngine->AddEntities(entity5);
+	phyEngine->AddEntities(entity6);
 	
 	std::cout << phyEngine->GetNumEntities() << std::endl;
 	phyEngine->GetEntity(0)->SetTranslation(0.0f, 0.0f, 0.0f);
 	entity2->SetTranslation(2.0f, 0.0f, 0.0f);
+	entity4->SetTranslation(3.0f, 0.0f, 0.0f);
+	entity5->SetTranslation(4.0f, 0.0f, 0.0f);
+	entity6->SetTranslation(5.0f, 0.0f, 0.0f);
 	phyEngine->GetEntity(0)->SetWorldMatrix();
 	entity2->SetWorldMatrix();
+	entity4->SetWorldMatrix();
+	entity5->SetWorldMatrix();
+	entity6->SetWorldMatrix();
 	entity2->ChangeDirection();
 	DirectX::BoundingSphere newSphere;
     phyEngine->GetEntity(0)->GetCollider()->Transform(newSphere,phyEngine->GetEntity(0)->getWorldMatrix());
 	(*phyEngine->GetEntity(0)->GetCollider()) = newSphere;
 	phyEngine->GetEntity(1)->GetCollider()->Transform(newSphere, phyEngine->GetEntity(1)->getWorldMatrix());
 	(*phyEngine->GetEntity(1)->GetCollider()) = newSphere;
+	phyEngine->GetEntity(2)->GetCollider()->Transform(newSphere, phyEngine->GetEntity(2)->getWorldMatrix());
+	(*phyEngine->GetEntity(2)->GetCollider()) = newSphere;
+	phyEngine->GetEntity(3)->GetCollider()->Transform(newSphere, phyEngine->GetEntity(3)->getWorldMatrix());
+	(*phyEngine->GetEntity(3)->GetCollider()) = newSphere;
+	phyEngine->GetEntity(4)->GetCollider()->Transform(newSphere, phyEngine->GetEntity(4)->getWorldMatrix());
+	(*phyEngine->GetEntity(4)->GetCollider()) = newSphere;
+	
 	std::cout << phyEngine->GetEntity(0)->GetCollider()->Center.x << " " << phyEngine->GetEntity(0)->GetCollider()->Center.y << " " << phyEngine->GetEntity(0)->GetCollider()->Center.z << std::endl;
 	std::cout << phyEngine->GetEntity(1)->GetCollider()->Center.x << " " << phyEngine->GetEntity(1)->GetCollider()->Center.y << " " << phyEngine->GetEntity(1)->GetCollider()->Center.z << std::endl;
 	std::cout << phyEngine->GetEntity(0)->GetCollider()->Radius << " " << phyEngine->GetEntity(1)->GetCollider()->Radius << std::endl;
@@ -413,28 +430,28 @@ void Game::Update(float deltaTime, float totalTime)
 	//entity2->SetWorldMatrix();
 
 	//Set entity3 worldTransformation
-	entity3->SetTranslation(cosTime, cosTime, cosTime);
-	entity3->SetRotation(totalTime, totalTime, totalTime);
+	//entity3->SetTranslation(cosTime, cosTime, cosTime);
+	//entity3->SetRotation(totalTime, totalTime, totalTime);
 	//entity3->SetScale(sinTime, sinTime, sinTime);
-	entity3->SetWorldMatrix();
+	//entity3->SetWorldMatrix();
 
 	//Set entity4 worldTransformation
-	entity4->SetTranslation(-cosTime, -cosTime, -cosTime);
-	entity4->SetRotation(totalTime, totalTime, totalTime);
+	//entity4->SetTranslation(-cosTime, -cosTime, -cosTime);
+	//entity4->SetRotation(totalTime, totalTime, totalTime);
 	//entity4->SetScale(sinTime, sinTime, sinTime);
-	entity4->SetWorldMatrix();
+	//entity4->SetWorldMatrix();
 
 	//Set entity5 worldTransformation
-	entity5->SetTranslation(sinTime, cosTime, sinTime);
-	entity5->SetRotation(totalTime, totalTime, totalTime);
+	//entity5->SetTranslation(sinTime, cosTime, sinTime);
+	//entity5->SetRotation(totalTime, totalTime, totalTime);
 	//entity5->SetScale(sinTime, sinTime, sinTime);
-	entity5->SetWorldMatrix();
+	//entity5->SetWorldMatrix();
 
 	//Set entity6 worldTransformation
-	entity6->SetTranslation(-sinTime, -cosTime, -sinTime);
-	entity6->SetRotation(totalTime, totalTime, totalTime);
+	//entity6->SetTranslation(-sinTime, -cosTime, -sinTime);
+	//entity6->SetRotation(totalTime, totalTime, totalTime);
 	//entity6->SetScale(sinTime, sinTime, sinTime);
-	entity6->SetWorldMatrix();
+	//entity6->SetWorldMatrix();
 
 	//Update Camera
 	cameraObj->Update(deltaTime);
@@ -464,10 +481,10 @@ void Game::Draw(float deltaTime, float totalTime)
 	//Shader for the game entities
 	Shader(entity1);
 	Shader(entity2);
-	/*Shader(entity3);
+	//Shader(entity3);
 	Shader(entity4);
 	Shader(entity5);
-	Shader(entity6);*/
+	Shader(entity6);
 
 	// Present the back buffer to the user
 	//  - Puts the final frame we're drawing into the window so the user can see it

@@ -5,6 +5,7 @@ using namespace DirectX;
 Mesh::Mesh(Vertex * vertices, int numVertices, unsigned int * indices, int numIndices1, ID3D11Device* device)
 {
 	createVertex_IndexBuffer(vertices, numVertices, indices, numIndices1, device);
+	//BoundingSphere::CreateFromPoints(collider, numVertices, &positions[0], sizeof(XMFLOAT3));
 }
 
 Mesh::Mesh(char*  fileName, ID3D11Device* device)
