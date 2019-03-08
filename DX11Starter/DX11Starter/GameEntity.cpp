@@ -2,7 +2,7 @@
 
 
 
-GameEntity::GameEntity(Mesh* meshObject, Material* materialObj)
+GameEntity::GameEntity(Mesh* meshObject, Material* materialObj, bool isControled)
 {
 	//accept the pointer of Mesh object
 	gameObj = meshObject;
@@ -12,6 +12,9 @@ GameEntity::GameEntity(Mesh* meshObject, Material* materialObj)
 	
 	//aceept the pointer of collider
 	collider = gameObj->GetSphereCollider();
+
+	//accept isControled
+	m_isControled = isControled;
 
 	//Set default vaules for the matrix
 	translation =
@@ -75,7 +78,7 @@ void GameEntity::SetWorldMatrix()
 	DirectX::XMMATRIX objTranslation = DirectX::XMLoadFloat4x4(&translation);
 	DirectX::XMMATRIX objRotation    = DirectX::XMLoadFloat4x4(&rotation);
 	DirectX::XMMATRIX objScale       = DirectX::XMLoadFloat4x4(&scale);
-	DirectX::XMMATRIX objWorldMatrix = objScale * objRotation * objTranslation * objRotation;
+	DirectX::XMMATRIX objWorldMatrix = objScale * objRotation * objTranslation;
 	DirectX::XMStoreFloat4x4(&worldMatrix, DirectX::XMMatrixTranspose(objWorldMatrix));
 }
 
@@ -95,7 +98,9 @@ void GameEntity::SetRotation(float x, float y, float z)
 	DirectX::XMMATRIX objRotationX = DirectX::XMMatrixRotationX(x);
 	DirectX::XMMATRIX objRotationY = DirectX::XMMatrixRotationY(y);
 	DirectX::XMMATRIX objRotationZ = DirectX::XMMatrixRotationZ(z);
-	DirectX::XMStoreFloat4x4(&rotation, objRotationX * objRotationY * objRotationZ);
+	DirectX::XMMATRIX newRotation = DirectX::XMLoadFloat4x4(&rotation);
+	newRotation = newRotation * objRotationX * objRotationY * objRotationZ;
+	DirectX::XMStoreFloat4x4(&rotation, newRotation);
 }
 
 void GameEntity::SetScale(float x, float y, float z)
@@ -139,4 +144,9 @@ void GameEntity::prepareMaterial(DirectX::XMFLOAT4X4 viewMatrix, DirectX::XMFLOA
 	//    you'll need to swap the current shaders before each draw
 	material->getVertexShader()->SetShader();
 	material->getPixelShader()->SetShader();
+}
+
+void GameEntity::Movement()
+{
+
 }

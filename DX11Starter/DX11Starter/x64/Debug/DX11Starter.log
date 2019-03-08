@@ -1,4 +1,5 @@
-﻿  Game.cpp
-  PhysicsEngine.cpp
-  Generating Code...
+﻿  PhysicsEngine.cpp
+z:\igmprofile\desktop\enginetest\game-graphic-programming-\dx11starter\dx11starter\physicsengine.cpp(53): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+z:\igmprofile\desktop\enginetest\game-graphic-programming-\dx11starter\dx11starter\physicsengine.cpp(52): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+z:\igmprofile\desktop\enginetest\game-graphic-programming-\dx11starter\dx11starter\physicsengine.cpp(51): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   DX11Starter.vcxproj -> Z:\IGMProfile\Desktop\EngineTest\Game-Graphic-Programming-\DX11Starter\x64\Debug\DX11Starter.exe

@@ -18,8 +18,8 @@ Camera::Camera(float screenWidth, float screenHeight)
 		0.0f, 0.0f, 0.0f, 1.0f,
 	};
 
-	cameraPosition = XMVectorSet(0.0f, 0.0f, -9.0f, 0.0f);;
-	cameraDirection = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	cameraPosition = XMVectorSet(0.0f, 5.0f, -9.0f, 0.0f);;
+	cameraDirection = XMVectorSet(0.0f, -0.3f, 1.0f, 0.0f);
 	cameraUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 	aroundX = 0.0f;
 	aroundY = 0.0f;

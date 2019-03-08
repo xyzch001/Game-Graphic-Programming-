@@ -17,6 +17,8 @@ public:
 		return (unsigned int)m_entities.size();
 	}
 
+	void PlayerControl();
+	
 	/*void AddObject(const PhysicsObject& object);
 	void Simulate(float deltaTime);
 	void HandleCollisions();*/

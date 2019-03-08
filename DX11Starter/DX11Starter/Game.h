@@ -41,6 +41,7 @@ private:
 	Mesh* cube;
 	Mesh* cone;
 	Mesh* cylinder;
+	Mesh* geometry;
 
 	//Five new gameentities
 	GameEntity* entity1;
@@ -49,7 +50,7 @@ private:
 	GameEntity* entity4;
 	GameEntity* entity5;
 	GameEntity* entity6;
-
+	
 	
 
 

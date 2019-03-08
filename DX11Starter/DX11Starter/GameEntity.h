@@ -7,7 +7,7 @@
 class GameEntity
 {
 public:
-	GameEntity(Mesh* meshObject, Material* materialObj);
+	GameEntity(Mesh* meshObject, Material* materialObj, bool isControled);
 	~GameEntity();
 
 	//Get the Mesh members
@@ -29,7 +29,7 @@ public:
 	inline float ChangeDirection() { 
 		direction = -direction;
 		return direction; }
-	inline DirectX::XMMATRIX getWordCollider() {
+	inline DirectX::XMMATRIX getWorldMatrix() {
 		DirectX::XMMATRIX collider = DirectX::XMLoadFloat4x4(&worldMatrix);
 		collider = DirectX::XMMatrixTranspose(collider);
 		return collider;
@@ -41,7 +41,15 @@ public:
 		return gameObj;
 	}
 
+	DirectX::BoundingSphere collider;
 	inline DirectX::BoundingSphere* GetCollider() { return &collider; }
+	inline bool GetIsControl() { return m_isControled; }
+
+	void Movement();
+
+	float x_velocity = 0;
+	float y_velocity = 0;
+	float z_velocity = 0;
 
 private:
 	//the translation, rotation and scale of this entity
@@ -57,7 +65,9 @@ private:
 	Material* material;
 
 	float direction = 1;
-	DirectX::BoundingSphere collider;
+
+	bool m_isControled;
+	
 
 };
 

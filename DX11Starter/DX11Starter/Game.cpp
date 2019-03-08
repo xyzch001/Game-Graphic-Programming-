@@ -90,8 +90,8 @@ Game::~Game()
 // --------------------------------------------------------
 void Game::Init()
 {
-	CreateWICTextureFromFile(device, context, L"..\\..\\Textures\\TexturesCom_Cliffs0464_7_seamless_S.jpg", 0, &srv);
-	CreateWICTextureFromFile(device, context, L"..\\..\\Textures\\TexturesCom_MetalBare0146_4_M.jpg", 0, &srv1);
+	CreateWICTextureFromFile(device, context, L"Textures\\TexturesCom_Cliffs0464_7_seamless_S.jpg", 0, &srv);
+	CreateWICTextureFromFile(device, context, L"Textures\\TexturesCom_MetalBare0146_4_M.jpg", 0, &srv1);
 	sampleDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampleDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampleDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -273,7 +273,7 @@ void Game::CreateBasicGeometry()
 	//XMFLOAT4 green = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 	//XMFLOAT4 blue = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
 
-	XMFLOAT3 normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
+	XMFLOAT3 normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	XMFLOAT2 uv = XMFLOAT2(0.0f, 0.0f);
 
 
@@ -282,11 +282,11 @@ void Game::CreateBasicGeometry()
 	//    over to a DirectX-controlled data structure (the vertex buffer)
 	Vertex vertices1[] =
 	{
-		{ XMFLOAT3(+0.0f, +0.6f, +0.0f), normal, uv },
-		{ XMFLOAT3(+0.5f, +0.1f, +0.0f), normal, uv },
-		{ XMFLOAT3(-0.5f, +0.1f, +0.0f), normal, uv },
-		{ XMFLOAT3(+0.0f, +0.1f, +0.5f), normal, uv },
-		{ XMFLOAT3(+0.0f, +0.1f, -0.5f), normal, uv },
+		{ XMFLOAT3(+100.0f, -0.5f, +100.0f), normal, uv },
+		{ XMFLOAT3(-100.0f, -0.5f, +100.0f), normal, uv },
+		{ XMFLOAT3(-100.0f, -0.5f, -100.0f), normal, uv },
+		{ XMFLOAT3(+100.0f, -0.5f, -100.0f), normal, uv },
+		
 	};
 
 	Vertex vertices2[] =
@@ -316,7 +316,7 @@ void Game::CreateBasicGeometry()
 	// - Indices are technically not required if the vertices are in the buffer 
 	//    in the correct order and each one will be used exactly once
 	// - But just to see how it's done...
-	unsigned int indices1[] = { 0, 1, 4, 0, 4, 2, 0, 3, 1, 0, 2, 3, 1, 2, 4, 2, 1, 3 };
+	unsigned int indices1[] = { 0, 2, 1, 0, 3, 2};
 	unsigned int indices2[] = { 0, 2, 4, 0, 4, 1, 2, 1, 4, 2, 3, 1, 0, 3, 2, 0, 1, 3 };
 	unsigned int indices3[] = { 0, 2, 1, 1, 2, 3, 2, 5, 3, 2, 4, 5, 4, 7, 5, 4, 6, 7, 0, 1, 7, 0, 7, 6, 0, 6, 2, 2, 6, 4, 1, 3, 7, 3, 5, 7};
 
@@ -324,35 +324,38 @@ void Game::CreateBasicGeometry()
 	/*geometry1 = new Mesh(vertices1, 5, indices1, 18, device);
 	geometry2 = new Mesh(vertices2, 5, indices2, 18, device);
 	geometry3 = new Mesh(vertices3, 8, indices3, 36, device);*/
-	sphere = new Mesh("..\\..\\OBJ_Files\\sphere.obj", device);
-	torus = new Mesh("..\\..\\OBJ_Files\\torus.obj", device);
-	helix = new Mesh("..\\..\\OBJ_Files\\helix.obj", device);
-	cube = new Mesh("..\\..\\OBJ_Files\\cube.obj", device);
-	cone = new Mesh("..\\..\\OBJ_Files\\cone.obj", device);
-	cylinder = new Mesh("..\\..\\OBJ_Files\\cylinder.obj", device);
+	geometry = new Mesh(vertices1, 4, indices1, 6, device);
+
+
+	sphere = new Mesh("OBJ_Files\\sphere.obj", device);
+	torus = new Mesh("OBJ_Files\\torus.obj", device);
+	helix = new Mesh("OBJ_Files\\helix.obj", device);
+	cube = new Mesh("OBJ_Files\\cube.obj", device);
+	cone = new Mesh("OBJ_Files\\cone.obj", device);
+	cylinder = new Mesh("OBJ_Files\\cylinder.obj", device);
 	
 	//Create GameEntity objects and accept pointer of Mesh
-	entity1 = new GameEntity(sphere, material);
-	entity2 = new GameEntity(sphere, material);
-	entity3 = new GameEntity(helix, material);
-	entity4 = new GameEntity(cube, metal);
-	entity5 = new GameEntity(cone, metal);
-	entity6 = new GameEntity(cylinder, metal);
+	entity1 = new GameEntity(sphere, material, true);
+	entity2 = new GameEntity(sphere, material, false);
+	entity3 = new GameEntity(helix, material, false);
+	entity4 = new GameEntity(cube, metal, false);
+	entity5 = new GameEntity(cone, metal, false);
+	entity6 = new GameEntity(cylinder, metal, false);
 
 	phyEngine = new PhysicsEngine();
 	phyEngine->AddEntities(entity1);
 	phyEngine->AddEntities(entity2);
 	
 	std::cout << phyEngine->GetNumEntities() << std::endl;
-	phyEngine->GetEntity(0)->SetTranslation(-2.0f, -2.0f, -2.0f);
-	entity2->SetTranslation(2.0f, 2.0f, 2.0f);
+	phyEngine->GetEntity(0)->SetTranslation(0.0f, 0.0f, 0.0f);
+	entity2->SetTranslation(2.0f, 0.0f, 0.0f);
 	phyEngine->GetEntity(0)->SetWorldMatrix();
 	entity2->SetWorldMatrix();
 	entity2->ChangeDirection();
 	DirectX::BoundingSphere newSphere;
-    phyEngine->GetEntity(0)->GetCollider()->Transform(newSphere,phyEngine->GetEntity(0)->getWordCollider());
+    phyEngine->GetEntity(0)->GetCollider()->Transform(newSphere,phyEngine->GetEntity(0)->getWorldMatrix());
 	(*phyEngine->GetEntity(0)->GetCollider()) = newSphere;
-	phyEngine->GetEntity(1)->GetCollider()->Transform(newSphere, phyEngine->GetEntity(1)->getWordCollider());
+	phyEngine->GetEntity(1)->GetCollider()->Transform(newSphere, phyEngine->GetEntity(1)->getWorldMatrix());
 	(*phyEngine->GetEntity(1)->GetCollider()) = newSphere;
 	std::cout << phyEngine->GetEntity(0)->GetCollider()->Center.x << " " << phyEngine->GetEntity(0)->GetCollider()->Center.y << " " << phyEngine->GetEntity(0)->GetCollider()->Center.z << std::endl;
 	std::cout << phyEngine->GetEntity(1)->GetCollider()->Center.x << " " << phyEngine->GetEntity(1)->GetCollider()->Center.y << " " << phyEngine->GetEntity(1)->GetCollider()->Center.z << std::endl;
@@ -393,8 +396,9 @@ void Game::Update(float deltaTime, float totalTime)
 	float cosTime = cos(totalTime * 0.5f)*2;
 	float speed = totalTime * 0.5f;
 
-	phyEngine->Simulate(speed);
+	phyEngine->Simulate(deltaTime);
 	phyEngine->HandleCollisions();
+	phyEngine->PlayerControl();
 
 	//Set entity1 worldTransformation
 	//entity1->SetTranslation(speed, speed, speed);
